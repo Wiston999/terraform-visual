@@ -1,4 +1,6 @@
 import { Entities } from '@app/data'
+import isEqual from 'lodash/isEqual'
+import * as Diff from 'diff'
 
 export const TerraformPlan = {
   fromJsonStr(jsonStr: string): Entities.TerraformPlan {
@@ -20,6 +22,8 @@ export const TerraformPlan = {
           before: resource_change.change.before,
           after: resource_change.change.after,
           after_unknown: resource_change.change.after_unknown,
+          after_sensitive: resource_change.change.after_sensitive,
+          before_sensitive: resource_change.change.before_sensitive,
         },
       }
 
@@ -28,6 +32,33 @@ export const TerraformPlan = {
 
     return plan
   },
+}
+
+export const TerraformPlanResourceChangeFieldDiff = {
+  isDiff(
+    change: Entities.TerraformPlanResourceChangeFieldDiff
+  ): boolean {
+    return !isEqual(change.src.value, change.dst.value) || change.dst.unknown_after
+  }
+}
+
+export const TerraformPlanResourceChangeField = {
+  setValueType(
+    data: Entities.TerraformPlanResourceChangeField,
+    value: any
+  ): Entities.TerraformPlanResourceChangeField {
+    data.value = value
+    data.type = typeof value
+    if (value === null) {
+      data.type = 'null'
+    } else if (Array.isArray(value)){
+      data.type = 'array'
+      data.value = JSON.stringify(value, null, 4)
+    } else if (typeof value === 'object') {
+      data.value = JSON.stringify(value, null, 4)
+    }
+    return data
+  }
 }
 
 export const TerraformPlanResourceChangeChange = {
@@ -69,41 +100,78 @@ export const TerraformPlanResourceChangeChange = {
     if (change.before) {
       for (const field of Object.keys(change.before)) {
         if (!diff[field]) {
-          diff[field] = []
+          diff[field] = {
+            src: {} as Entities.TerraformPlanResourceChangeField,
+            dst: {} as Entities.TerraformPlanResourceChangeField,
+          }
         }
 
-        const beofreChange = change.before[field]
-        if (typeof beofreChange === 'string') {
-          diff[field].push(beofreChange)
-        } else {
-          diff[field].push(JSON.stringify(change.before[field]))
+        const beforeChange = change.before[field]
+        if (field in change.before_sensitive) {
+          diff[field].src.sensitive = true
         }
+        diff[field].src = TerraformPlanResourceChangeField.setValueType(
+          diff[field].src,
+          beforeChange,
+        )
       }
-    }
-
-    for (const field of Object.keys(change.after_unknown)) {
-      if (!diff[field]) {
-        diff[field] = []
-      }
-
-      diff[field].push('(known after apply)')
     }
 
     if (change.after) {
       for (const field of Object.keys(change.after)) {
         if (!diff[field]) {
-          diff[field] = []
+          diff[field] = {
+            src: {} as Entities.TerraformPlanResourceChangeField,
+            dst: {} as Entities.TerraformPlanResourceChangeField,
+          }
         }
-
         const afterChange = change.after[field]
-        if (typeof afterChange === 'string') {
-          diff[field].push(afterChange)
-        } else {
-          diff[field].push(JSON.stringify(change.after[field]))
+        if (field in change.after_sensitive){
+          diff[field].dst.sensitive = true
         }
+        diff[field].dst = TerraformPlanResourceChangeField.setValueType(
+          diff[field].dst,
+          afterChange,
+        )
       }
     }
 
+    for (const field of Object.keys(change.after_unknown)) {
+      if (!diff[field]) {
+          diff[field] = {
+            src: {} as Entities.TerraformPlanResourceChangeField,
+            dst: {} as Entities.TerraformPlanResourceChangeField,
+          }
+      }
+      diff[field].dst.unknown_after = true
+    }
+
+    // Compute structured diff for better readibility
+    for (const field of Object.keys(diff)) {
+      const diffChange = diff[field]
+      const before = diffChange.src.value ? diffChange.src.value : ''
+      const beforeLines = (before.match(/\n/g) || '').length + 1
+      const after = diffChange.dst.value ? diffChange.dst.value : ''
+      const afterLines = (after.match(/\n/g) || '').length + 1
+
+      if (!(diffChange.src.sensitive || diffChange.dst.sensitive) && (beforeLines > 4 || afterLines > 4)) {
+        diffChange.diff = Diff.structuredPatch('', '', before, after, '', '')
+      }
+    }
     return diff
   },
+}
+
+export const TerraformPlanResourceChangeChangeDiff = {
+  getUnchangedFields(
+    changes: Entities.TerraformPlanResourceChangeChangeDiff
+  ): Entities.TerraformPlanResourceChangeChangeDiff {
+    const newChanges: Entities.TerraformPlanResourceChangeChangeDiff = {}
+    for (const field of Object.keys(changes)) {
+      if (!TerraformPlanResourceChangeFieldDiff.isDiff(changes[field])) {
+        newChanges[field] = changes[field]
+      }
+    }
+    return newChanges
+  }
 }

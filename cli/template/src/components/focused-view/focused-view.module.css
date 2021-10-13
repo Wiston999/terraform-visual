@@ -1,5 +1,5 @@
 .container {
-  height: 40rem;
+  height: 20em;
   width: 100%;
 
   padding: 1.5rem;
@@ -12,7 +12,17 @@
 .row {
   display: flex;
 
-  margin-top: 1rem;
+  justify-content: center;
+  padding-top: 1rem;
+  align-items: baseline;
+}
+
+.row:hover {
+  background: #444444;
+}
+
+.rowHide {
+  display: none;
 }
 
 .rowHeader, .rowBefore, .rowArrow {
@@ -20,8 +30,8 @@
 }
 
 .rowHeader {
-  min-width: 10rem;
-  max-width: 10rem;
+  min-width: 20rem;
+  max-width: 20rem;
 
   font-weight: bold;
   word-break: break-word;
@@ -52,4 +62,63 @@
 
 .colorYellow {
   color: #ffc107;
+}
+
+.rowAddress {
+  display: flex;
+  flex: 0 0 100%;
+  font-weight: bold;
+  align-items: baseline;
+  margin-left: 1em;
+  justify-content: space-between;
+}
+
+.address {
+  font-size: 2rem;
+  align-items: baseline;
+}
+
+.rowToggle {
+  justify-content: flex-end;
+  margin-right: 1em;
+}
+
+.button {
+  background: #d4caca;
+  font-size: 16px;
+  border-radius: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.diffRow {
+  font-family: monospace;
+  display: flex;
+}
+
+.diffRow:hover {
+  background: #222222;
+}
+
+.diffOldLine, .diffNewLine {
+  margin: 0em 1em;
+  min-width: 2rem;
+}
+
+.diffOldLine {
+  color: #646464;
+}
+
+.diffNewLine {
+  color: #bbbbbb;
+}
+
+.diffHr {
+  border: 1px solid #646464;
 }

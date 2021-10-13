@@ -109,6 +109,9 @@ dist
 .vscode
 .vscode-test
 
+# Vim
+*.sw?
+
 # yarn v2
 .yarn/cache
 .yarn/unplugged

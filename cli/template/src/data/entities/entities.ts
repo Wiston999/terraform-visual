@@ -1,5 +1,9 @@
+import * as Diff from 'diff'
+
 export interface TerraformPlan {
   resource_changes: TerraformPlanResourceChange[]
+  terraform_version?: string
+  format_version?: string
 }
 
 export interface TerraformPlanResourceChange {
@@ -13,7 +17,9 @@ export interface TerraformPlanResourceChange {
 export interface TerraformPlanResourceChangeChange {
   actions: string[]
   before: { [key: string]: unknown } | null
+  before_sensitive: { [key: string]: unknown } | null
   after: { [key: string]: unknown } | null
+  after_sensitive: { [key: string]: unknown } | null
   after_unknown: { [key: string]: unknown }
 }
 
@@ -34,6 +40,19 @@ export enum TerraformPlanResourceChangeChangeActionAlias {
   DeleteCreate,
 }
 
+export interface TerraformPlanResourceChangeField {
+  value: string | null
+  type: string
+  sensitive: boolean
+  unknown_after: boolean
+}
+
+export interface TerraformPlanResourceChangeFieldDiff {
+  src: TerraformPlanResourceChangeField
+  dst: TerraformPlanResourceChangeField
+  diff?: Diff.ParsedDiff
+}
+
 export interface TerraformPlanResourceChangeChangeDiff {
-  [field: string]: string[]
+  [field: string]: TerraformPlanResourceChangeFieldDiff
 }

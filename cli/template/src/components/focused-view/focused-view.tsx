@@ -1,7 +1,9 @@
 import styles from '@app/components/focused-view/focused-view.module.css'
+import React, { useState } from 'react';
+import capitalize from 'lodash/capitalize';
 import { Entities } from '@app/data'
-import isEqual from 'lodash/isEqual'
-import { BsArrowRight } from 'react-icons/bs'
+import { BsLink45Deg, BsCheckCircle, BsSlashCircle, BsBraces, BsHash } from 'react-icons/bs'
+import { FaEquals, FaChevronRight } from 'react-icons/fa'
 
 interface Props {
   resource?: Entities.TerraformPlanResourceChange
@@ -9,19 +11,30 @@ interface Props {
 
 export const C = (props: Props) => {
   const { resource } = props
+  const [showUnchanged, setShowUnchanged] = useState(false)
 
   if (!resource) {
     return <div className={styles.container} />
   }
 
+  const diff = Entities.Utils.TerraformPlanResourceChangeChange.getDiff(resource.change)
+  const actionAlias = Entities.Utils.TerraformPlanResourceChangeChange.getActionAlias(resource.change)
+  const unchangedCount = Entities.Utils.TerraformPlanResourceChangeChangeDiff.getUnchangedFields(diff)
+
   return (
     <div className={styles.container}>
-      <div className={styles.row}>
-        <div className={styles.rowHeader}>Address</div>
-        <div className={styles.rowBefore}>{resource.address}</div>
+      <div className={styles.rowAddress}>
+        <div className={styles.address}>
+          {resource.address}
+        </div>
+        <div className={styles.rowToggle}>
+          <Actions actions={resource.change.actions} />
+          <UnchangedToggle toggleValue={showUnchanged} toggleFn={setShowUnchanged} count={Object.keys(unchangedCount).length}/>
+        </div>
       </div>
-      <Actions actions={resource.change.actions} />
-      <ChangedFieldList change={resource.change} />
+      {Object.keys(diff).map((field, key) => (
+        <ChangedField key={key} field={field} changes={diff[field]} actionAlias={actionAlias} showUnchanged={showUnchanged} />
+      ))}
     </div>
   )
 }
@@ -40,20 +53,19 @@ const Actions = (props: ActionsProps) => {
 
     actionElems.push(
       <span key={2 * i} className={colorClassName}>
-        {action}
+        {capitalize(action)}
       </span>,
     )
 
     if (i !== actions.length - 1) {
-      actionElems.push(<span key={2 * i + 1}>, </span>)
+      actionElems.push(<span key={2 * i + 1}> then </span>)
     }
   }
 
   return (
-    <div className={styles.row}>
-      <div className={styles.rowHeader}>Actions</div>
-      <div className={styles.rowBefore}>[{actionElems}]</div>
-    </div>
+    <>
+    {actionElems}
+    </>
   )
 }
 
@@ -74,59 +86,187 @@ const getActionsColorClassName = (action: string): string => {
   }
 }
 
-interface ChangedFieldListProps {
-  change: Entities.TerraformPlanResourceChangeChange
+interface UnchangedToggleProps {
+  count: number
+  toggleValue: boolean
+  toggleFn: (any) => unknown
 }
 
-const ChangedFieldList = (props: ChangedFieldListProps) => {
-  const { change } = props
+const UnchangedToggle = (props: UnchangedToggleProps) => {
+  const { count, toggleValue, toggleFn } = props
 
-  const actionAlias = Entities.Utils.TerraformPlanResourceChangeChange.getActionAlias(change)
-  const diff = Entities.Utils.TerraformPlanResourceChangeChange.getDiff(change)
+  const showStr = toggleValue ? 'Hide' : 'Show'
 
   return (
     <>
-      {Object.keys(diff).map((field, key) => (
-        <ChangedField key={key} field={field} changes={diff[field]} actionAlias={actionAlias} />
-      ))}
+    <button className={styles.button} onClick={() => toggleFn(!toggleValue)}>
+      {showStr} {count} unchanged elements
+    </button>
     </>
   )
 }
 
 interface ChangedFieldProps {
   field: string
-  changes: string[]
+  changes: Entities.TerraformPlanResourceChangeFieldDiff
   actionAlias: Entities.TerraformPlanResourceChangeChangeActionAlias
+  showUnchanged: boolean
 }
 
 const ChangedField = (props: ChangedFieldProps) => {
-  const { field, changes, actionAlias } = props
-
-  const beforeChange = changes[0]
-  const afterChange = changes[changes.length - 1]
+  const { showUnchanged, field, changes, actionAlias } = props
 
   const [beforeChangeColorClassName, afterChangeColorClassName] = getFieldChangeColorClassName(
     actionAlias,
   )
 
+  const hiddenClass = Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes) || showUnchanged ?
+    '' : styles.rowHide
+
+  const separator = Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes) ?
+    <FaChevronRight title='Field changes'/> : <FaEquals title='Field is unchanged'/>
+
+  const fieldType = getFieldTypeIcon(changes.src ? changes.src.type : changes.dst.type)
+
+  const detailView = changes.diff ?
+    <UnifiedDiffView changes={changes.diff} /> :
+    <ColumsFieldView changes={changes} actionAlias={actionAlias} />
+
   return (
-    <div className={styles.row}>
-      <div className={styles.rowHeader}>{field}</div>
-      <div className={`${styles.rowBefore} ${beforeChangeColorClassName}`}>
-        <pre>{prettifyJson(beforeChange)}</pre>
+    <div className={`${styles.row} ${hiddenClass}`}>
+      <div className={styles.rowHeader}>
+      {fieldType} {field}
       </div>
-      {!isEqual(beforeChange, afterChange) && (
-        <>
-          <div className={styles.rowArrow}>
-            <BsArrowRight />
-          </div>
-          <div className={`${styles.rowAfter} ${afterChangeColorClassName}`}>
-            <pre>{prettifyJson(afterChange)}</pre>
-          </div>
-        </>
-      )}
+      {detailView}
     </div>
   )
+}
+
+interface UnifiedDiffViewProps {
+  changes: Diff.ParsedDiff
+}
+
+const UnifiedDiffView = (props: UnifiedDiffViewProps) => {
+  const { changes } = props
+
+  let lines : JSX.Element[] = []
+  let index = 0;
+
+  lines.push(<hr key={index++} className={styles.diffHr}/>)
+  for (const hunk of changes.hunks) {
+    let oldStart = hunk.oldStart
+    let newStart = hunk.newStart
+    for (const line of hunk.lines) {
+      const className = getDiffLineColorClassName(line[0])
+      let oldNumber = null
+      let newNumber = null
+      switch (line[0]) {
+        case '+':
+          newNumber = newStart++
+          break
+        case '-':
+          oldNumber = oldStart++
+          break
+        default:
+          newNumber = newStart++
+          oldNumber = oldStart++
+          break
+      }
+
+      lines.push(
+        <div key={index++} className={styles.diffRow}>
+          <span className={styles.diffOldLine}>{oldNumber}</span>
+          <span className={styles.diffNewLine}>{newNumber}</span>
+          <span className={className}>{line}</span>
+        </div>,
+      )
+    }
+    lines.push(<hr key={index++} className={styles.diffHr} />)
+  }
+
+  return (
+    <>
+      <div className={`${styles.rowBefore}`}>
+        <pre>{lines}</pre>
+      </div>
+    </>
+  )
+}
+
+const getDiffLineColorClassName = (
+  changeType: string
+): string => {
+  switch (changeType) {
+    case '+':
+      return styles.colorGreen
+    case '-':
+      return styles.colorRed
+    default:
+      return ''
+  }
+}
+
+interface ColumsFieldViewProps {
+  changes: Entities.TerraformPlanResourceChangeFieldDiff
+  actionAlias: Entities.TerraformPlanResourceChangeChangeActionAlias
+}
+
+const ColumsFieldView = (props: ColumsFieldViewProps) => {
+  const { changes, actionAlias } = props
+
+  const [beforeChangeColorClassName, afterChangeColorClassName] = getFieldChangeColorClassName(
+    actionAlias,
+  )
+
+  const separator = Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes) ?
+    <FaChevronRight title='Field changes'/> : <FaEquals title='Field is unchanged'/>
+
+  return (
+    <>
+      <div className={`${styles.rowBefore} ${beforeChangeColorClassName}`}>
+        <pre>{outputChange(changes.src)}</pre>
+      </div>
+      <>
+        <div className={styles.rowArrow}>
+          {separator}
+        </div>
+        <div className={`${styles.rowAfter} ${afterChangeColorClassName}`}>
+          <pre>{outputChange(changes.dst)}</pre>
+        </div>
+      </>
+    </>
+  )
+}
+
+const getFieldTypeIcon = (
+  input: string
+): JSX.Element => {
+  if (input === 'null') {
+    return <BsSlashCircle title={input} />
+  }
+  if (input === 'string') {
+    return <BsLink45Deg title={input} />
+  }
+  if (input === 'number') {
+    return <BsHash title={input} />
+  }
+  if (input === 'boolean') {
+    return <BsCheckCircle title={input} />
+  }
+  return <BsBraces title={input}/>
+}
+
+const outputChange = (
+  input: Entities.TerraformPlanResourceChangeField
+): string => {
+  if (input.sensitive) {
+    return '(sensitive)'
+  } else if (input.unknown_after) {
+    return '(known after apply)'
+  } else if (input.value === null || input.value === undefined) {
+    return '(null)'
+  }
+  return input.value
 }
 
 const getFieldChangeColorClassName = (

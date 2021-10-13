@@ -4,7 +4,7 @@ import styles from '@app/pages/index.module.css'
 import { useState } from 'react'
 
 const Home = () => {
-  let plan
+  let plan: Entities.TerraformPlan = {resource_changes: []};
 
   if (process.browser) {
     //@ts-ignore
@@ -17,6 +17,9 @@ const Home = () => {
     <div className={styles.container}>
       <PlanGraph.C plan={plan} setFocusedResource={setFocusedResource} />
       <FocusedView.C resource={focusedResource} />
+      <div className={styles.metaInfo}>
+        Plan format v{plan.format_version} generated using Terraform v{plan.terraform_version}
+      </div>
     </div>
   )
 }

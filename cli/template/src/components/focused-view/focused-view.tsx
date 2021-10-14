@@ -127,7 +127,7 @@ const ChangedField = (props: ChangedFieldProps) => {
   const separator = Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes) ?
     <FaChevronRight title='Field changes'/> : <FaEquals title='Field is unchanged'/>
 
-  const fieldType = getFieldTypeIcon(changes.src ? changes.src.type : changes.dst.type)
+  const fieldType = getFieldTypeIcon(changes.dst ? changes.dst.type : changes.src.type)
 
   const detailView = changes.diff ?
     <UnifiedDiffView changes={changes.diff} /> :
@@ -135,7 +135,7 @@ const ChangedField = (props: ChangedFieldProps) => {
 
   return (
     <div className={`${styles.row} ${hiddenClass}`}>
-      <div className={styles.rowHeader}>
+      <div className={styles.rowHeader} title={field}>
       {fieldType} {field}
       </div>
       {detailView}
@@ -255,9 +255,9 @@ const getFieldTypeIcon = (
     return <BsCheckCircle title={input} />
   }
   if (input === 'array') {
-    return <RiBracesLine title={input} />
+    return <RiBracketsLine title={input} />
   }
-  return <RiBracketsLine title={input}/>
+  return <RiBracesLine title={input}/>
 }
 
 const outputChange = (
@@ -267,7 +267,7 @@ const outputChange = (
     return '(sensitive)'
   } else if (input.unknown_after) {
     return '(known after apply)'
-  } else if (input.value === null || input.value === undefined) {
+  } else if (input.type === 'null') {
     return '(null)'
   }
   return input.value

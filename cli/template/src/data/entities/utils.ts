@@ -47,15 +47,14 @@ export const TerraformPlanResourceChangeField = {
     data: Entities.TerraformPlanResourceChangeField,
     value: any
   ): Entities.TerraformPlanResourceChangeField {
-    data.value = value
+    data.value = JSON.stringify(value, null, 4)
     data.type = typeof value
-    if (value === null) {
+    if (data.type === 'string') {
+      data.value = value
+    } else if (value === null) {
       data.type = 'null'
     } else if (Array.isArray(value)){
       data.type = 'array'
-      data.value = JSON.stringify(value, null, 4)
-    } else if (typeof value === 'object') {
-      data.value = JSON.stringify(value, null, 4)
     }
     return data
   }

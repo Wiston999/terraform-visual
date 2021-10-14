@@ -34,7 +34,9 @@
   max-width: 20rem;
 
   font-weight: bold;
-  word-break: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .rowBefore, .rowAfter {

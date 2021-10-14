@@ -2,9 +2,10 @@
   display: flex;
   justify-content: center;
 
-  height: 55rem;
+  height: 50rem;
 
   margin-bottom: 2rem;
 
   border: 0.2rem solid #e6e6e6;
+  width: 60%;
 }

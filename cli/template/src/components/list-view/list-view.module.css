@@ -1,0 +1,58 @@
+.container {
+  overflow: scroll;
+  align-items: baseline;
+
+  height: 50rem;
+  width: 40%;
+}
+
+.row {
+  font-family: monospace;
+  display: flex;
+  padding: 5px 5px;
+  cursor: default;
+}
+
+.row:hover {
+  opacity: 0.9;
+}
+
+.rowSelected {
+  color: #fff;
+}
+
+.rowHeader {
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.rowCreate {
+  background: #28a74599;
+}
+
+.rowCreateDelete {
+  background: rgb(184,184,184);
+  background: linear-gradient(66deg, #28a74599 15%, #dc354599 75%);
+}
+
+.rowDeleteCreate {
+  background: rgb(184,184,184);
+  background: linear-gradient(66deg, #dc354599 15%, #28a74599 75%);
+}
+
+.rowDelete {
+  background: #dc354599;
+}
+
+.rowUpdate {
+  background: #ffc107;
+}
+
+.actionSymbol {
+  max-width: 2em;
+  min-width: 2em;
+}
+
+.actionAddress {
+  font-family: monospace;
+}

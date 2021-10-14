@@ -2,7 +2,8 @@ import styles from '@app/components/focused-view/focused-view.module.css'
 import React, { useState } from 'react';
 import capitalize from 'lodash/capitalize';
 import { Entities } from '@app/data'
-import { BsLink45Deg, BsCheckCircle, BsSlashCircle, BsBraces, BsHash } from 'react-icons/bs'
+import { BsLink45Deg, BsCheckCircle, BsSlashCircle, BsHash } from 'react-icons/bs'
+import { RiBracesLine, RiBracketsLine } from "react-icons/ri";
 import { FaEquals, FaChevronRight } from 'react-icons/fa'
 
 interface Props {
@@ -253,7 +254,10 @@ const getFieldTypeIcon = (
   if (input === 'boolean') {
     return <BsCheckCircle title={input} />
   }
-  return <BsBraces title={input}/>
+  if (input === 'array') {
+    return <RiBracesLine title={input} />
+  }
+  return <RiBracketsLine title={input}/>
 }
 
 const outputChange = (
@@ -285,24 +289,5 @@ const getFieldChangeColorClassName = (
       return [styles.colorRed, styles.colorGreen]
     default:
       return [styles.colorYellow, styles.colorYellow]
-  }
-}
-
-const prettifyJson = (input: string): string => {
-  const [parsedJson, isValidJson] = tryParseJson(input)
-
-  if (isValidJson) {
-    return JSON.stringify(parsedJson, null, 4)
-  }
-
-  return JSON.stringify(input, null, 4)
-}
-
-const tryParseJson = (input: string): [{}, boolean] => {
-  try {
-    const parsedJson = JSON.parse(input)
-    return [parsedJson, true]
-  } catch (err) {
-    return [{}, false]
   }
 }

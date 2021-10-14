@@ -1,4 +1,4 @@
-import { FocusedView, PlanGraph } from '@app/components'
+import { FocusedView, ListView, PlanGraph } from '@app/components'
 import { Entities } from '@app/data'
 import styles from '@app/pages/index.module.css'
 import { useState } from 'react'
@@ -15,7 +15,8 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
-      <PlanGraph.C plan={plan} setFocusedResource={setFocusedResource} />
+      <ListView.C plan={plan} focusedResource={focusedResource} setFocusedResource={setFocusedResource} />
+      <PlanGraph.C plan={plan} focusedResource={focusedResource} setFocusedResource={setFocusedResource} />
       <FocusedView.C resource={focusedResource} />
       <div className={styles.metaInfo}>
         Plan format v{plan.format_version} generated using Terraform v{plan.terraform_version}

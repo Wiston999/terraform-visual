@@ -3,11 +3,14 @@ const G6: typeof import('@antv/g6') = process.browser ? require('@antv/g6') : nu
 import { PlanGraph } from '@app/components'
 import { Entities } from '@app/data'
 
-const COLOR_DARK_GREY = '#6c757d'
-const COLOR_GREEN = '#28a745'
-const COLOR_RED = '#dc3545'
-const COLOR_YELLOW = '#ffc107'
-const COLOR_WHITE = '#ffffff'
+export const COLOR_BLACK = '#000000'
+export const COLOR_DARK_GREY = '#6c757d'
+export const COLOR_GREEN = '#28a745'
+export const COLOR_RED = '#dc3545'
+export const COLOR_RED_GREEN = 'l(0) 0.15:#dc354599 0.75:#28a74599'
+export const COLOR_GREEN_RED = '#dc3545'
+export const COLOR_YELLOW = '#ffc107'
+export const COLOR_WHITE = '#ffffff'
 
 const LABEL_FONT_SIZE = 14
 const LABEL_PADDING = 20
@@ -80,7 +83,7 @@ export const IntermediateGraph = {
       children: [],
       labelCfg: {
         style: {
-          fill: COLOR_WHITE,
+          fill: COLOR_BLACK,
           fontSize: LABEL_FONT_SIZE,
         },
       },
@@ -105,8 +108,8 @@ export const IntermediateGraph = {
 
       switch (actionAlias) {
         case Entities.TerraformPlanResourceChangeChangeActionAlias.CreateDelete: {
-          graphData.style.fill = COLOR_YELLOW
-          graphData.style.stroke = COLOR_YELLOW
+          graphData.style.fill = COLOR_GREEN_RED
+          graphData.style.stroke = COLOR_GREEN
           break
         }
 
@@ -123,8 +126,8 @@ export const IntermediateGraph = {
         }
 
         case Entities.TerraformPlanResourceChangeChangeActionAlias.DeleteCreate: {
-          graphData.style.fill = COLOR_YELLOW
-          graphData.style.stroke = COLOR_YELLOW
+          graphData.style.fill = COLOR_RED_GREEN
+          graphData.style.stroke = COLOR_RED
           break
         }
 
@@ -134,6 +137,8 @@ export const IntermediateGraph = {
           break
         }
       }
+    } else {
+      graphData.labelCfg.style.fill = COLOR_WHITE
     }
 
     for (const child of Object.values(intermediateGraph.children)) {

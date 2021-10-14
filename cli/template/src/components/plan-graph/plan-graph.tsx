@@ -4,17 +4,19 @@ const G6: typeof import('@antv/g6') = process.browser ? require('@antv/g6') : nu
 import { PlanGraph } from '@app/components'
 import styles from '@app/components/plan-graph/plan-graph.module.css'
 import { Entities } from '@app/data'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 
 interface Props {
   plan?: Entities.TerraformPlan
+  focusedResource?: Entities.TerraformPlanResourceChange
 
   setFocusedResource: Function
 }
 
 export const C = (props: Props) => {
-  const { plan, setFocusedResource } = props
+  const { plan, focusedResource, setFocusedResource } = props
+  let selectedItem
 
   const ref = React.useRef<HTMLDivElement>(null)
   let graph: TreeGraph
@@ -36,7 +38,7 @@ export const C = (props: Props) => {
       // @ts-ignore
       container: ReactDOM.findDOMNode(ref.current),
       width: ref?.current?.clientWidth || 0,
-      height: 550, // TODO: customize
+      height: 500, // TODO: customize
       linkCenter: true,
       modes: {
         default: [
@@ -61,7 +63,7 @@ export const C = (props: Props) => {
       },
       layout: {
         type: 'compactBox',
-        direction: 'TB',
+        direction: 'LR',
         getId: (graphData: PlanGraph.Entities.GraphData) => graphData.id,
         getWidth: () => 0,
         getHGap: (graphData: PlanGraph.Entities.GraphData) => graphData.hGap,
@@ -75,17 +77,37 @@ export const C = (props: Props) => {
         ],
       },
       defaultEdge: {
-        type: 'cubic-vertical',
+        type: 'cubic-horizontal',
         color: ' #e6e6e6',
         size: 3,
       },
     })
 
-    graph.on('node:mouseenter', (event: any) => {
+    graph.on('node:click', (event: any) => {
+
       if (!event.item._cfg.model.resource) {
         return
       }
 
+      event.item.update({
+        labelCfg: {
+          style: {
+            fill: PlanGraph.Entities.Utils.COLOR_WHITE
+          }
+        }
+      })
+
+      if (selectedItem) {
+        selectedItem.update({
+          labelCfg: {
+            style: {
+              fill: PlanGraph.Entities.Utils.COLOR_BLACK
+            }
+          }
+        })
+      }
+
+      selectedItem = event.item
       setFocusedResource(event.item._cfg.model.resource)
     })
 

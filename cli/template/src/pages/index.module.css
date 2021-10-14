@@ -1,5 +1,9 @@
 .container {
   padding: 1rem 4rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .metaInfo {

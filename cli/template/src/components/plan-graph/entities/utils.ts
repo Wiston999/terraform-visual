@@ -94,7 +94,7 @@ export const IntermediateGraph = {
         radius: 4,
       },
       resource: intermediateGraph.resource,
-      hGap: 0,
+      hGap: 4,
     }
 
     if (!graphData.style) {

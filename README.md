@@ -1,5 +1,7 @@
 # [Terraform Visual](https://hieven.github.io/terraform-visual/)
 
+[![CI](https://github.com/Wiston999/terraform-visual/actions/workflows/push.yml/badge.svg)](https://github.com/Wiston999/terraform-visual/actions/workflows/push.yml)
+
 Terraform Visual is a simple but powerful tool to help you understand your Terraform plan easily.
 
 ![Demo.gif](https://github.com/hieven/terraform-visual/blob/master/docs/demo.gif?raw=true)

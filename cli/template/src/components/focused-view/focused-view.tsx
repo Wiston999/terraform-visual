@@ -124,12 +124,13 @@ const ChangedField = (props: ChangedFieldProps) => {
   const hiddenClass = Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes) || showUnchanged ?
     '' : styles.rowHide
 
-  const separator = Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes) ?
+  const isDiff = Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes)
+  const separator = isDiff ?
     <FaChevronRight title='Field changes'/> : <FaEquals title='Field is unchanged'/>
 
   const fieldType = getFieldTypeIcon(changes.dst ? changes.dst.type : changes.src.type)
 
-  const detailView = changes.diff ?
+  const detailView = changes.diff && isDiff ?
     <UnifiedDiffView changes={changes.diff} /> :
     <ColumsFieldView changes={changes} actionAlias={actionAlias} />
 
@@ -222,19 +223,34 @@ const ColumsFieldView = (props: ColumsFieldViewProps) => {
   const separator = Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes) ?
     <FaChevronRight title='Field changes'/> : <FaEquals title='Field is unchanged'/>
 
+  const elements: JSX.Element[] = []
+
+  if (actionAlias != Entities.TerraformPlanResourceChangeChangeActionAlias.Create) {
+    elements.push(
+      <div key='1' className={`${styles.rowBefore} ${beforeChangeColorClassName}`}>
+        <pre>{changes.src.value}</pre>
+      </div>,
+    )
+  }
+  if (actionAlias != Entities.TerraformPlanResourceChangeChangeActionAlias.Delete &&
+    actionAlias != Entities.TerraformPlanResourceChangeChangeActionAlias.Create)
+  {
+    elements.push(
+      <div key='2' className={styles.rowArrow}>
+        {separator}
+      </div>,
+    )
+  }
+  if (actionAlias != Entities.TerraformPlanResourceChangeChangeActionAlias.Delete) {
+    elements.push(
+      <div key='3' className={`${styles.rowAfter} ${afterChangeColorClassName}`}>
+        <pre>{changes.dst.value}</pre>
+      </div>,
+    )
+  }
   return (
     <>
-      <div className={`${styles.rowBefore} ${beforeChangeColorClassName}`}>
-        <pre>{outputChange(changes.src)}</pre>
-      </div>
-      <>
-        <div className={styles.rowArrow}>
-          {separator}
-        </div>
-        <div className={`${styles.rowAfter} ${afterChangeColorClassName}`}>
-          <pre>{outputChange(changes.dst)}</pre>
-        </div>
-      </>
+    {elements}
     </>
   )
 }
@@ -258,15 +274,6 @@ const getFieldTypeIcon = (
     return <RiBracketsLine title={input} />
   }
   return <RiBracesLine title={input}/>
-}
-
-const outputChange = (
-  input: Entities.TerraformPlanResourceChangeField
-): string => {
-  if (input.unknown_after) {
-    return '(known after apply)'
-  }
-  return input.value
 }
 
 const getFieldChangeColorClassName = (

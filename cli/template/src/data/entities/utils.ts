@@ -179,6 +179,7 @@ export const TerraformPlanResourceChangeChange = {
           }
       }
       diff[field].dst.unknown_after = true
+      diff[field].dst.value = '(known after apply)'
     }
 
     // Compute structured diff for better readibility

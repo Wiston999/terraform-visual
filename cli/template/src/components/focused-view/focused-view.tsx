@@ -263,12 +263,8 @@ const getFieldTypeIcon = (
 const outputChange = (
   input: Entities.TerraformPlanResourceChangeField
 ): string => {
-  if (input.sensitive) {
-    return '(sensitive)'
-  } else if (input.unknown_after) {
+  if (input.unknown_after) {
     return '(known after apply)'
-  } else if (input.type === 'null') {
-    return '(null)'
   }
   return input.value
 }

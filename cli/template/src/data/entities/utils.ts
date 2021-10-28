@@ -45,10 +45,16 @@ export const TerraformPlanResourceChangeFieldDiff = {
 export const TerraformPlanResourceChangeField = {
   setValueType(
     data: Entities.TerraformPlanResourceChangeField,
-    value: any
+    value: any,
+    sensitive: any,
   ): Entities.TerraformPlanResourceChangeField {
-    data.value = JSON.stringify(value, null, 4)
+    data.sensitive = Boolean(sensitive)
     data.type = typeof value
+    data.value = TerraformPlanResourceChangeField.renderValue(
+      value,
+      sensitive || {},
+    )
+    data.value = JSON.stringify(data.value, null, 4)
     if (data.type === 'string') {
       data.value = value
     } else if (value === null) {
@@ -57,6 +63,42 @@ export const TerraformPlanResourceChangeField = {
       data.type = 'array'
     }
     return data
+  },
+  renderValue(
+    data: any,
+    sensitive_data: any,
+  ): string {
+    let newData = data
+    const dataType = typeof data
+    switch (dataType) {
+      case 'string':
+      case 'number':
+      case 'boolean':
+        if (sensitive_data) {
+          newData = '(sensitive)'
+        }
+        break
+      default: // Asume 'object'
+        if (Array.isArray(data)) {
+          data.forEach((item, index) => {
+            newData[index] = TerraformPlanResourceChangeField.renderValue(
+              item,
+              sensitive_data[index],
+            )
+          })
+        } else if (data === null) {
+          newData = '(null)'
+        } else {
+          for (const key of Object.keys(data)) {
+            newData[key] = TerraformPlanResourceChangeField.renderValue(
+              data[key],
+              sensitive_data[key],
+            )
+          }
+        }
+        break
+    }
+    return newData
   }
 }
 
@@ -105,13 +147,10 @@ export const TerraformPlanResourceChangeChange = {
           }
         }
 
-        const beforeChange = change.before[field]
-        if (field in change.before_sensitive) {
-          diff[field].src.sensitive = true
-        }
         diff[field].src = TerraformPlanResourceChangeField.setValueType(
           diff[field].src,
-          beforeChange,
+          change.before[field],
+          change.before_sensitive[field],
         )
       }
     }
@@ -124,13 +163,10 @@ export const TerraformPlanResourceChangeChange = {
             dst: {} as Entities.TerraformPlanResourceChangeField,
           }
         }
-        const afterChange = change.after[field]
-        if (field in change.after_sensitive){
-          diff[field].dst.sensitive = true
-        }
         diff[field].dst = TerraformPlanResourceChangeField.setValueType(
           diff[field].dst,
-          afterChange,
+          change.after[field],
+          change.after_sensitive[field],
         )
       }
     }
@@ -153,7 +189,7 @@ export const TerraformPlanResourceChangeChange = {
       const after = diffChange.dst.value ? diffChange.dst.value : ''
       const afterLines = (after.match(/\n/g) || '').length + 1
 
-      if (!(diffChange.src.sensitive || diffChange.dst.sensitive) && (beforeLines > 4 || afterLines > 4)) {
+      if (beforeLines > 4 || afterLines > 4) {
         diffChange.diff = Diff.structuredPatch('', '', before, after, '', '')
       }
     }

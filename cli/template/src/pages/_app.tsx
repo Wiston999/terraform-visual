@@ -1,9 +1,16 @@
 import '@app/pages/_app.css'
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { Entities } from '@app/data'
+import { useState } from 'react'
 import { Navbar } from '@app/components'
 import Head from 'next/head'
 
 const App = ({ Component, pageProps }) => {
+
+  const [activeView, setActiveView] = useState<Entities.AppView>(Entities.AppView.List)
+
   return (
     <>
       <Head>
@@ -15,9 +22,9 @@ const App = ({ Component, pageProps }) => {
         <script src="./plan.js" />
       </Head>
 
-      <Navbar.C />
+      <Navbar.C view={activeView} setView={setActiveView} />
 
-      <Component {...pageProps} />
+      <Component {...pageProps} view={activeView} setView={setActiveView} />
     </>
   )
 }

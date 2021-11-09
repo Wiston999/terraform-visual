@@ -7,6 +7,8 @@ import { Entities } from '@app/data'
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 
+import Container from 'react-bootstrap/Container'
+
 interface Props {
   plan?: Entities.TerraformPlan
   focusedResource?: Entities.TerraformPlanResourceChange
@@ -38,7 +40,7 @@ export const C = (props: Props) => {
       // @ts-ignore
       container: ReactDOM.findDOMNode(ref.current),
       width: ref?.current?.clientWidth || 0,
-      height: 500, // TODO: customize
+      height: ref?.current?.clientHeight || 500,
       linkCenter: true,
       modes: {
         default: [
@@ -126,11 +128,11 @@ export const C = (props: Props) => {
 
   if (!plan) {
     return (
-      <div className={styles.container}>
+      <Container className={styles.container}>
         <p className={styles.loading}>loading graph...</p>
-      </div>
+      </Container>
     )
   }
 
-  return <div className={styles.container} ref={ref} />
+  return <Container className={styles.container} ref={ref} />
 }

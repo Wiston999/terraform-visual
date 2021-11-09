@@ -45,7 +45,15 @@ export const IntermediateGraph = {
         continue
       }
 
-      const addrComps = resource.address.split('.')
+      // Address index (the part between [...]) might contain dots
+      // Using regexes to avoid weird behaviours when address index contains dots
+      const addrIndex = resource.address.match(/(\[.+\])/)
+      const addrUnindexed = resource.address.match(/([^\[\]]+)(:?\[.+\])?/)[1]
+      const addrComps = addrUnindexed.split('.')
+
+      if ( addrIndex !== null ) {
+        addrComps[addrComps.length-1] = addrComps[addrComps.length-1] + addrIndex[1]
+      }
 
       let cur = graph
       for (let i = 0; i < addrComps.length; i++) {

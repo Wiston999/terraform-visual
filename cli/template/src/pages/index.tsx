@@ -1,10 +1,25 @@
-import { FocusedView, ListView, PlanGraph } from '@app/components'
+import { SummaryView, FocusedView, ListView, PlanGraph } from '@app/components'
 import { Entities } from '@app/data'
 import styles from '@app/pages/index.module.css'
 import { useState } from 'react'
 
-const Home = () => {
-  let plan: Entities.TerraformPlan = {resource_changes: []};
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
+interface Props {
+  view: Entities.AppView
+  setView: Function
+}
+
+const Home = (props: Props) => {
+  const { view, setView } = props
+
+  let plan: Entities.TerraformPlan = {
+    resource_changes: [],
+    variables: {},
+    resource_drift: [],
+  }
 
   if (process.browser) {
     //@ts-ignore
@@ -14,14 +29,26 @@ const Home = () => {
   const [focusedResource, setFocusedResource] = useState<Entities.TerraformPlanResourceChange>()
 
   return (
-    <div className={styles.container}>
-      <ListView.C plan={plan} focusedResource={focusedResource} setFocusedResource={setFocusedResource} />
-      <PlanGraph.C plan={plan} focusedResource={focusedResource} setFocusedResource={setFocusedResource} />
-      <FocusedView.C resource={focusedResource} />
-      <div className={styles.metaInfo}>
-        Plan format v{plan.format_version} generated using Terraform v{plan.terraform_version}
-      </div>
-    </div>
+    <Container fluid>
+      <Row className={styles.upperRow}>
+        <Col md={4}>
+          <SummaryView.C plan={plan} />
+        </Col>
+        <Col md={8}>
+          {view == Entities.AppView.List &&
+            <ListView.C plan={plan} focusedResource={focusedResource} setFocusedResource={setFocusedResource} />
+          }
+          {view == Entities.AppView.Tree &&
+            <PlanGraph.C plan={plan} focusedResource={focusedResource} setFocusedResource={setFocusedResource} />
+          }
+        </Col>
+      <Row>
+      </Row>
+        <Col>
+          <FocusedView.C resource={focusedResource} />
+        </Col>
+      </Row>
+    </Container>
   )
 }
 

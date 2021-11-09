@@ -1,9 +1,30 @@
 import * as Diff from 'diff'
 
+export enum AppView {
+  List = 'list',
+  Tree = 'tree',
+}
+
+export interface SearchInfo {
+  data: boolean
+  created: boolean
+  modified: boolean
+  deleted: boolean
+  group: SearchInfoGroupType
+  str: string
+}
+
+export enum SearchInfoGroupType {
+  Module = 'module',
+  ResourceType = 'resource-type',
+}
+
 export interface TerraformPlan {
   resource_changes: TerraformPlanResourceChange[]
   terraform_version?: string
   format_version?: string
+  variables?: { [key: string]: any }
+  resource_drift?: any[]
 }
 
 export interface TerraformPlanResourceChange {

@@ -1,58 +1,57 @@
-.container {
+.tableColumn {
+  max-height: 46vh;
+}
+
+.tableContent {
+  max-height: 90%;
   overflow: scroll;
-  align-items: baseline;
-
-  height: 50rem;
-  width: 40%;
-}
-
-.row {
-  font-family: monospace;
-  display: flex;
-  padding: 5px 5px;
-  cursor: default;
-}
-
-.row:hover {
-  opacity: 0.9;
-}
-
-.rowSelected {
-  color: #fff;
-}
-
-.rowHeader {
-  font-weight: bold;
-  font-size: 2rem;
+  overflow-x: hidden;
 }
 
 .rowCreate {
-  background: #28a74599;
+  color: #0f5132;
+  background-color: #d1e7dd;
+  border-color: #badbcc;
 }
 
 .rowCreateDelete {
-  background: rgb(184,184,184);
-  background: linear-gradient(66deg, #28a74599 15%, #dc354599 75%);
+  color: #0f5132;
+  background-color: #d1e7dd;
+  background: linear-gradient(66deg, #d1e7dd99 15%, #f8d7da99 75%);
+  border-color: #badbcc;
 }
 
 .rowDeleteCreate {
-  background: rgb(184,184,184);
-  background: linear-gradient(66deg, #dc354599 15%, #28a74599 75%);
-}
-
-.rowDelete {
-  background: #dc354599;
+  color: #0f5132;
+  background-color: #d1e7dd;
+  background: linear-gradient(66deg, #f8d7da99 15%, #d1e7dd99 75%);
+  border-color: #badbcc;
 }
 
 .rowUpdate {
-  background: #ffc107;
+  color: #664d03;
+  background-color: #fff3cd;
+  border-color: #ffecb5;
 }
 
-.actionSymbol {
-  max-width: 2em;
-  min-width: 2em;
+.rowDelete {
+  color: #842029;
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
 }
 
-.actionAddress {
-  font-family: monospace;
+.rowUnknown {
+  color: #41464b;
+  background-color: #e2e3e5;
+  border-color: #d3d6d8;
+}
+
+.rowSelected {
+  color: #7c7979;
+}
+
+.rowGroupKey {
+  color: #141619;
+  background-color: #b3b3b4;
+  border-color: #bcbebf;
 }

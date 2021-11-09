@@ -6,6 +6,15 @@ import { BsLink45Deg, BsCheckCircle, BsSlashCircle, BsHash } from 'react-icons/b
 import { RiBracesLine, RiBracketsLine } from "react-icons/ri";
 import { FaEquals, FaChevronRight } from 'react-icons/fa'
 
+import cx from 'classnames'
+
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import ToggleButton from 'react-bootstrap/ToggleButton'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Tooltip from 'react-bootstrap/Tooltip'
+
 interface Props {
   resource?: Entities.TerraformPlanResourceChange
 }
@@ -15,7 +24,10 @@ export const C = (props: Props) => {
   const [showUnchanged, setShowUnchanged] = useState(false)
 
   if (!resource) {
-    return <div className={styles.container} />
+    return (
+      <Container fluid className={styles.container}>
+      </Container>
+    )
   }
 
   const diff = Entities.Utils.TerraformPlanResourceChangeChange.getDiff(resource.change)
@@ -23,20 +35,28 @@ export const C = (props: Props) => {
   const unchangedCount = Entities.Utils.TerraformPlanResourceChangeChangeDiff.getUnchangedFields(diff)
 
   return (
-    <div className={styles.container}>
-      <div className={styles.rowAddress}>
-        <div className={styles.address}>
-          {resource.address}
-        </div>
-        <div className={styles.rowToggle}>
-          <Actions actions={resource.change.actions} />
-          <UnchangedToggle toggleValue={showUnchanged} toggleFn={setShowUnchanged} count={Object.keys(unchangedCount).length}/>
-        </div>
-      </div>
+    <Container fluid className={cx(styles.container, "py-2")}>
+      <Row>
+        <Col md={8}>
+          <h2 className="text-truncate" title={resource.address}>{resource.address}</h2>
+        </Col>
+        <Col>
+          <Row className="d-flex align-items-center">
+            <Col md={{ span: 2, offset: 2 }}>
+              <Actions actions={resource.change.actions} />
+            </Col>
+            <Col md={{ span: 6, offset: 2 }}>
+              <UnchangedToggle toggleValue={showUnchanged} toggleFn={setShowUnchanged} count={Object.keys(unchangedCount).length}/>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+      <Row>
       {Object.keys(diff).map((field, key) => (
         <ChangedField key={key} field={field} changes={diff[field]} actionAlias={actionAlias} showUnchanged={showUnchanged} />
       ))}
-    </div>
+      </Row>
+    </Container>
   )
 }
 
@@ -54,7 +74,7 @@ const Actions = (props: ActionsProps) => {
 
     actionElems.push(
       <span key={2 * i} className={colorClassName}>
-        {capitalize(action)}
+        <strong>{capitalize(action)}</strong>
       </span>,
     )
 
@@ -100,9 +120,15 @@ const UnchangedToggle = (props: UnchangedToggleProps) => {
 
   return (
     <>
-    <button className={styles.button} onClick={() => toggleFn(!toggleValue)}>
+    <ToggleButton
+      variant="outline-light"
+      type="checkbox"
+      value="changed-toggle"
+      checked={toggleValue}
+      onClick={() => toggleFn(!toggleValue)}
+    >
       {showStr} {count} unchanged elements
-    </button>
+    </ToggleButton>
     </>
   )
 }
@@ -121,8 +147,7 @@ const ChangedField = (props: ChangedFieldProps) => {
     actionAlias,
   )
 
-  const hiddenClass = Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes) || showUnchanged ?
-    '' : styles.rowHide
+  const showRow = Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes) || showUnchanged
 
   const isDiff = Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes)
   const separator = isDiff ?
@@ -135,12 +160,16 @@ const ChangedField = (props: ChangedFieldProps) => {
     <ColumsFieldView changes={changes} actionAlias={actionAlias} />
 
   return (
-    <div className={`${styles.row} ${hiddenClass}`}>
-      <div className={styles.rowHeader} title={field}>
-      {fieldType} {field}
-      </div>
-      {detailView}
-    </div>
+    <Row className={cx(styles.row, {'d-none': !showRow})}>
+      <Col md={2}>
+        <div title={field} className="text-truncate">
+          {fieldType} <strong>{field}</strong>
+        </div>
+      </Col>
+      <Col md={10}>
+        {detailView}
+      </Col>
+    </Row>
   )
 }
 
@@ -223,34 +252,36 @@ const ColumsFieldView = (props: ColumsFieldViewProps) => {
   const separator = Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes) ?
     <FaChevronRight title='Field changes'/> : <FaEquals title='Field is unchanged'/>
 
+  const composedAction: Boolean = actionAlias != Entities.TerraformPlanResourceChangeChangeActionAlias.Delete &&
+    actionAlias != Entities.TerraformPlanResourceChangeChangeActionAlias.Create
   const elements: JSX.Element[] = []
 
   if (actionAlias != Entities.TerraformPlanResourceChangeChangeActionAlias.Create) {
     elements.push(
-      <div key='1' className={`${styles.rowBefore} ${beforeChangeColorClassName}`}>
-        <pre>{changes.src.value}</pre>
-      </div>,
+      <Col key='1' md={composedAction ? 5 : 12} className={cx(styles.detailItem, "text-break", beforeChangeColorClassName)}>
+        {changes.src.value}
+      </Col>,
     )
   }
-  if (actionAlias != Entities.TerraformPlanResourceChangeChangeActionAlias.Delete &&
-    actionAlias != Entities.TerraformPlanResourceChangeChangeActionAlias.Create)
-  {
+  if (composedAction) {
     elements.push(
-      <div key='2' className={styles.rowArrow}>
+      <Col key='2' md={2}>
         {separator}
-      </div>,
+      </Col>,
     )
   }
   if (actionAlias != Entities.TerraformPlanResourceChangeChangeActionAlias.Delete) {
     elements.push(
-      <div key='3' className={`${styles.rowAfter} ${afterChangeColorClassName}`}>
-        <pre>{changes.dst.value}</pre>
-      </div>,
+      <Col key='3' md={composedAction ? 5 : 12} className={cx(styles.detailItem, "text-break", afterChangeColorClassName)}>
+        {changes.dst.value}
+      </Col>,
     )
   }
   return (
     <>
-    {elements}
+    <Row>
+      {elements}
+    </Row>
     </>
   )
 }

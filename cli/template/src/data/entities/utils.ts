@@ -54,10 +54,10 @@ export const TerraformPlanResourceChangeField = {
       value,
       sensitive || {},
     )
-    data.value = JSON.stringify(data.value, null, 4)
-    if (data.type === 'string') {
-      data.value = value
-    } else if (value === null) {
+    if (data.type != 'string') {
+      data.value = JSON.stringify(data.value, null, 4)
+    }
+    if (value === null) {
       data.type = 'null'
     } else if (Array.isArray(value)){
       data.type = 'array'
@@ -71,10 +71,10 @@ export const TerraformPlanResourceChangeField = {
     let newData = data
     const dataType = typeof data
     switch (dataType) {
-      case 'string':
       case 'number':
       case 'boolean':
-        if (sensitive_data) {
+      case 'string':
+        if (sensitive_data === true) {
           newData = '(sensitive)'
         }
         break

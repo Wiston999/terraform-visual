@@ -1,6 +1,7 @@
 # Terraform Visual
 
 [![CI](https://github.com/Wiston999/terraform-visual/actions/workflows/push.yml/badge.svg)](https://github.com/Wiston999/terraform-visual/actions/workflows/push.yml)
+[![Coverage Status](https://coveralls.io/repos/github/Wiston999/terraform-visual/badge.svg)](https://coveralls.io/github/Wiston999/terraform-visual)
 
 Terraform Visual is a simple but powerful tool to help you understand your Terraform plan easily.
 

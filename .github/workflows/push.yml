@@ -39,7 +39,7 @@ jobs:
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: 'terraform-visual/coverage/terraform-visual/lcov.info'
+        path-to-lcov: '${{ env.working-dir }}/template/coverage/lcov.info'
 
   build:
     needs: test

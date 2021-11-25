@@ -42,7 +42,7 @@ jobs:
         path-to-lcov: 'terraform-visual/coverage/terraform-visual/lcov.info'
 
   build:
-#    needs: test
+    needs: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1

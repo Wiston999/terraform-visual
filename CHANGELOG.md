@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2021-11-25
+
+## Changed
+- Fixed some components to avoid crashing on empty plans
+
+## Added
+- Added basic tests and coveralls.io
+
 ## [1.1.1] - 2021-11-15
 
 ## Changed

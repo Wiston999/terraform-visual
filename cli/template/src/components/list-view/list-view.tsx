@@ -33,7 +33,7 @@ export const C = (props: Props) => {
   let i = 0;
   let total = 0;
 
-  for (const resource of plan.resource_changes) {
+  for (const resource of plan.resource_changes || []) {
     if (
       Entities.Utils.TerraformPlanResourceChangeChange.getActionAlias(resource.change) ===
       Entities.TerraformPlanResourceChangeChangeActionAlias.Noop

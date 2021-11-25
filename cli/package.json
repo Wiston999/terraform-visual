@@ -11,6 +11,8 @@
     "build:cli": "rm -rf dist && yarn tsc",
     "dev:cli": "ts-node src/index",
     "build:template": "cd template && rm -rf .next && rm -rf dist && next build && next export -o dist",
+    "test:template": "cd template && yarn test",
+    "test:ci:template": "cd template && yarn test:ci",
     "dev:template": "cd template && next dev"
   },
   "devDependencies": {

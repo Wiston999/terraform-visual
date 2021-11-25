@@ -23,9 +23,10 @@ export const C = (props: Props) => {
   let created: number = 0
   let destroyed: number = 0
   let modified: number = 0
-  let varsManaged: number = Object.keys(plan.variables).length
+  let drifted: number = (plan.resource_drift || []).length
+  let varsManaged: number = Object.keys(plan.variables || {}).length
 
-  for (const resource of plan.resource_changes) {
+  for (const resource of plan.resource_changes || []) {
     const actionAlias = Entities.Utils.TerraformPlanResourceChangeChange.getActionAlias(resource.change)
     switch (actionAlias) {
       case Entities.TerraformPlanResourceChangeChangeActionAlias.CreateDelete:
@@ -63,7 +64,7 @@ export const C = (props: Props) => {
     {
       info: 'Total number of resources modified out of other Terraform apply',
       label: 'Total resources drifted',
-      value: `${plan.resource_drift.length} (${(plan.resource_drift.length/totalResources).toFixed(2)} % of managed)`
+      value: `${drifted} (${(drifted/totalResources).toFixed(2)} % of managed)`
     },
     {
       info: 'Total number of resources that will be changed in this plan',

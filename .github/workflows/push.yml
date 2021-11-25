@@ -8,41 +8,38 @@ name: CI
 on: [push]
 
 jobs:
-  # test:
-  #   # Machine environment:
-  #   # https://help.github.com/en/articles/software-in-virtual-environments-for-github-actions#ubuntu-1804-lts
-  #   # We specify the Node.js version manually below, and use versioned Chrome from Puppeteer.
-  #   runs-on: ubuntu-18.04
-  #
-  #   env:
-  #     working-dir: './cli'
-  #
-  #   steps:
-  #   - uses: actions/checkout@v1
-  #   - name: Use Node.js 12.8
-  #     uses: actions/setup-node@v1
-  #     with:
-  #       node-version: 12.8
-  #   - uses: actions/cache@v2
-  #     with:
-  #       path: ~/.npm
-  #       key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-  #       restore-keys: |
-  #         ${{ runner.os }}-node-
-  #   - name: Install dependencies
-  #     run: npm install
-  #     working-directory: ${{ env.working-dir }}
-  #   - name: Lint
-  #     run: npm run lint
-  #     working-directory: ${{ env.working-dir }}
-  #   - name: Test
-  #     run: npm run test-ci
-  #     working-directory: ${{ env.working-dir }}
-  #   - name: Update coveralls
-  #     uses: coverallsapp/github-action@master
-  #     with:
-  #       github-token: ${{ secrets.GITHUB_TOKEN }}
-  #       path-to-lcov: 'terraform-visual/coverage/terraform-visual/lcov.info'
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      working-dir: './cli'
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js 12.22
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.22
+    - uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - name: Install dependencies
+      run: npm install
+      working-directory: ${{ env.working-dir }}
+    # - name: Lint
+    #   run: npm run lint
+    #   working-directory: ${{ env.working-dir }}
+    - name: Test
+      run: npm run test:ci:template
+      working-directory: ${{ env.working-dir }}
+    - name: Update coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: 'terraform-visual/coverage/terraform-visual/lcov.info'
 
   build:
 #    needs: test

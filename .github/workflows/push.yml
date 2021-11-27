@@ -10,7 +10,7 @@ jobs:
 
     env:
       working-dir: './cli'
-      COVERALLS_DEBUG: true
+      NODE_COVERALLS_DEBUG: 'true'
 
     steps:
     - uses: actions/checkout@v1

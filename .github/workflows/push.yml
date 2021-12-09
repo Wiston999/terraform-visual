@@ -38,6 +38,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: '${{ env.working-dir }}/template/coverage/lcov.info'
+        base-path: '${{ env.working-dir }}/template/'
 
   build:
     needs: test

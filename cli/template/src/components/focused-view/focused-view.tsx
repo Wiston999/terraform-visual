@@ -153,7 +153,7 @@ const ChangedField = (props: ChangedFieldProps) => {
   const separator = isDiff ?
     <FaChevronRight title='Field changes'/> : <FaEquals title='Field is unchanged'/>
 
-  const fieldType = getFieldTypeIcon(changes.dst ? changes.dst.type : changes.src.type)
+  const fieldType = getFieldTypeIcon(changes.dst?.type ? changes.dst.type : changes.src.type)
 
   const detailView = changes.diff && isDiff ?
     <UnifiedDiffView changes={changes.diff} /> :

@@ -76,6 +76,11 @@ export const TerraformPlanResourceChangeField = {
       case 'string':
         if (sensitive_data === true) {
           newData = '(sensitive)'
+        } else {
+          // Try to render if data is a JSON stringified
+          try {
+            newData = JSON.stringify(JSON.parse(data), null, 4)
+          } catch (e) {}
         }
         break
       default: // Asume 'object'

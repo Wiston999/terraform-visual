@@ -66,6 +66,7 @@
 }
 
 .collapsedItem {
-  max-height: 4em;
+  max-height: 3em;
   overflow: hidden;
+  box-shadow: 2px 2px 4px #aaaaaa;
 }

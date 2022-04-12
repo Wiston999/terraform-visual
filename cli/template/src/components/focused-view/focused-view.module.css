@@ -64,3 +64,8 @@
   align-items: center;
   justify-content: flex-start;
 }
+
+.collapsedItem {
+  max-height: 4em;
+  overflow: hidden;
+}

@@ -144,6 +144,7 @@ const ChangedField = (props: ChangedFieldProps) => {
   const { showUnchanged, field, changes, actionAlias } = props
 
   const [showDiffView, setShowDiffView] = useState(true)
+  const [collapsed, setCollapsed] = useState(false)
 
   const [beforeChangeColorClassName, afterChangeColorClassName] = getFieldChangeColorClassName(
     actionAlias,
@@ -164,8 +165,15 @@ const ChangedField = (props: ChangedFieldProps) => {
   return (
     <Row className={cx(styles.row, {'d-none': !showRow})}>
       <Col md={2}>
-        <div title={field} className="text-truncate">
-          <span>{fieldType} <strong>{field}</strong></span>
+        <div title={field}>
+          <Row className="text-truncate align-items-center d-flex">
+            <Col md={{span: 8}} >
+              {fieldType} <strong>{field}</strong>
+            </Col>
+            <Col md={{span: 2, offset: 2}} >
+              <CollapseToggle toggleValue={collapsed} toggleFn={setCollapsed}/>
+            </Col>
+          </Row>
           {isDiff ? (
             <div className={ styles.viewToggleContainer } >
               <ViewToggle toggleValue={showDiffView} toggleFn={setShowDiffView}/>
@@ -173,7 +181,7 @@ const ChangedField = (props: ChangedFieldProps) => {
           ) : null }
         </div>
       </Col>
-      <Col md={10}>
+      <Col md={10} className={collapsed ? styles.collapsedItem : null} >
         {detailView}
       </Col>
     </Row>
@@ -224,7 +232,7 @@ const UnifiedDiffView = (props: UnifiedDiffViewProps) => {
 
   return (
     <>
-      <div className={`${styles.rowBefore}`}>
+      <div>
         <pre>{lines}</pre>
       </div>
     </>
@@ -289,6 +297,33 @@ const ColumsFieldView = (props: ColumsFieldViewProps) => {
     <Row>
       {elements}
     </Row>
+    </>
+  )
+}
+
+interface CollapseToggleProps {
+  toggleValue: boolean
+  toggleFn: (any) => unknown
+}
+
+const CollapseToggle = (props: CollapseToggleProps) => {
+  const { toggleValue, toggleFn } = props
+
+  const showStr = toggleValue ? '+' : '-'
+
+  return (
+    <>
+    <ToggleButton
+      variant="outline-light"
+      title={toggleValue ? 'Expand' : 'Collapse'}
+      size="sm"
+      type="checkbox"
+      value="changed-toggle"
+      checked={toggleValue}
+      onClick={() => toggleFn(!toggleValue)}
+    >
+      {showStr}
+    </ToggleButton>
     </>
   )
 }

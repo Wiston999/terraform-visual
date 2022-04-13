@@ -143,30 +143,45 @@ interface ChangedFieldProps {
 const ChangedField = (props: ChangedFieldProps) => {
   const { showUnchanged, field, changes, actionAlias } = props
 
+  const [showDiffView, setShowDiffView] = useState(true)
+  const [collapsed, setCollapsed] = useState(false)
+
   const [beforeChangeColorClassName, afterChangeColorClassName] = getFieldChangeColorClassName(
     actionAlias,
   )
 
   const showRow = Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes) || showUnchanged
 
-  const isDiff = Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes)
+  const isDiff = changes.diff && Entities.Utils.TerraformPlanResourceChangeFieldDiff.isDiff(changes)
   const separator = isDiff ?
     <FaChevronRight title='Field changes'/> : <FaEquals title='Field is unchanged'/>
 
-  const fieldType = getFieldTypeIcon(changes.dst ? changes.dst.type : changes.src.type)
+  const fieldType = getFieldTypeIcon(changes.dst?.type ? changes.dst.type : changes.src.type)
 
-  const detailView = changes.diff && isDiff ?
+  const detailView = isDiff && showDiffView ?
     <UnifiedDiffView changes={changes.diff} /> :
     <ColumsFieldView changes={changes} actionAlias={actionAlias} />
 
   return (
     <Row className={cx(styles.row, {'d-none': !showRow})}>
       <Col md={2}>
-        <div title={field} className="text-truncate">
-          {fieldType} <strong>{field}</strong>
+        <div title={field}>
+          <Row className="text-truncate align-items-center d-flex">
+            <Col md={{span: 8}} >
+              {fieldType} <strong>{field}</strong>
+            </Col>
+            <Col md={{span: 2, offset: 2}} >
+              <CollapseToggle toggleValue={collapsed} toggleFn={setCollapsed}/>
+            </Col>
+          </Row>
+          {isDiff ? (
+            <div className={ styles.viewToggleContainer } >
+              <ViewToggle toggleValue={showDiffView} toggleFn={setShowDiffView}/>
+            </div>
+          ) : null }
         </div>
       </Col>
-      <Col md={10}>
+      <Col md={10} className={collapsed ? styles.collapsedItem : null} >
         {detailView}
       </Col>
     </Row>
@@ -217,7 +232,7 @@ const UnifiedDiffView = (props: UnifiedDiffViewProps) => {
 
   return (
     <>
-      <div className={`${styles.rowBefore}`}>
+      <div>
         <pre>{lines}</pre>
       </div>
     </>
@@ -282,6 +297,59 @@ const ColumsFieldView = (props: ColumsFieldViewProps) => {
     <Row>
       {elements}
     </Row>
+    </>
+  )
+}
+
+interface CollapseToggleProps {
+  toggleValue: boolean
+  toggleFn: (any) => unknown
+}
+
+const CollapseToggle = (props: CollapseToggleProps) => {
+  const { toggleValue, toggleFn } = props
+
+  const showStr = toggleValue ? '+' : '-'
+
+  return (
+    <>
+    <ToggleButton
+      variant="outline-light"
+      title={toggleValue ? 'Expand' : 'Collapse'}
+      size="sm"
+      type="checkbox"
+      value="changed-toggle"
+      checked={toggleValue}
+      onClick={() => toggleFn(!toggleValue)}
+    >
+      {showStr}
+    </ToggleButton>
+    </>
+  )
+}
+
+interface ViewToggleProps {
+  toggleValue: boolean
+  toggleFn: (any) => unknown
+}
+
+const ViewToggle = (props: ViewToggleProps) => {
+  const { toggleValue, toggleFn } = props
+
+  const showStr = toggleValue ? 'Columns' : 'Diff'
+
+  return (
+    <>
+    <ToggleButton
+      variant="outline-light"
+      size="sm"
+      type="checkbox"
+      value="changed-toggle"
+      checked={toggleValue}
+      onClick={() => toggleFn(!toggleValue)}
+    >
+      Use {showStr} View
+    </ToggleButton>
     </>
   )
 }

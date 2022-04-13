@@ -58,3 +58,15 @@
 .diffHr {
   border: 1px solid #646464;
 }
+
+.viewToggleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.collapsedItem {
+  max-height: 3em;
+  overflow: hidden;
+  box-shadow: 2px 2px 4px #aaaaaa;
+}

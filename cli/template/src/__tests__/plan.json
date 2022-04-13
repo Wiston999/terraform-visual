@@ -1,0 +1,1397 @@
+{
+  "format_version": "1.0",
+  "terraform_version": "1.1.7",
+  "variables": {
+    "aliases": {
+      "value": []
+    },
+    "aws_region": {
+      "value": "us-east-1"
+    },
+    "base_environment_services": {
+      "value": [
+        "api"
+      ]
+    },
+    "environment_services": {
+      "value": []
+    },
+    "environments": {
+      "value": []
+    },
+    "manage_zone": {
+      "value": true
+    },
+    "records": {
+      "value": [
+        {
+          "name": "www",
+          "ttl": 600,
+          "type": "A",
+          "values": [
+            "1.2.3.4"
+          ]
+        },
+        {
+          "name": "smtp",
+          "ttl": 600,
+          "type": "CNAME",
+          "values": [
+            "smtp.google.com"
+          ]
+        },
+        {
+          "name": "sftp",
+          "ttl": 600,
+          "type": "CNAME",
+          "values": [
+            "ftp.google.com"
+          ]
+        }
+      ]
+    },
+    "zone": {
+      "value": "example1.org"
+    }
+  },
+  "planned_values": {
+    "outputs": {
+      "total_records": {
+        "sensitive": false,
+        "value": 3
+      }
+    },
+    "root_module": {
+      "resources": [
+        {
+          "address": "aws_route53_record.r53_record[\"sftp.example1.org.-CNAME\"]",
+          "mode": "managed",
+          "type": "aws_route53_record",
+          "name": "r53_record",
+          "index": "sftp.example1.org.-CNAME",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 2,
+          "values": {
+            "alias": [],
+            "allow_overwrite": null,
+            "failover_routing_policy": [],
+            "fqdn": "sftp.example1.org",
+            "geolocation_routing_policy": [],
+            "health_check_id": "",
+            "id": "Z02461301UNR5K0AGDZX6_sftp.example1.org._CNAME",
+            "latency_routing_policy": [],
+            "multivalue_answer_routing_policy": null,
+            "name": "sftp.example1.org",
+            "records": [
+              "ftp.google.com"
+            ],
+            "set_identifier": "",
+            "ttl": 600,
+            "type": "CNAME",
+            "weighted_routing_policy": [],
+            "zone_id": "Z02461301UNR5K0AGDZX6"
+          },
+          "sensitive_values": {
+            "alias": [],
+            "failover_routing_policy": [],
+            "geolocation_routing_policy": [],
+            "latency_routing_policy": [],
+            "records": [
+              false
+            ],
+            "weighted_routing_policy": []
+          }
+        },
+        {
+          "address": "aws_route53_record.r53_record[\"smtp.example1.org.-CNAME\"]",
+          "mode": "managed",
+          "type": "aws_route53_record",
+          "name": "r53_record",
+          "index": "smtp.example1.org.-CNAME",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 2,
+          "values": {
+            "alias": [],
+            "allow_overwrite": null,
+            "failover_routing_policy": [],
+            "fqdn": "smtp.example1.org",
+            "geolocation_routing_policy": [],
+            "health_check_id": "",
+            "id": "Z02461301UNR5K0AGDZX6_smtp.example1.org._CNAME",
+            "latency_routing_policy": [],
+            "multivalue_answer_routing_policy": null,
+            "name": "smtp.example1.org",
+            "records": [
+              "smtp.google.com"
+            ],
+            "set_identifier": "",
+            "ttl": 600,
+            "type": "CNAME",
+            "weighted_routing_policy": [],
+            "zone_id": "Z02461301UNR5K0AGDZX6"
+          },
+          "sensitive_values": {
+            "alias": [],
+            "failover_routing_policy": [],
+            "geolocation_routing_policy": [],
+            "latency_routing_policy": [],
+            "records": [
+              false
+            ],
+            "weighted_routing_policy": []
+          }
+        },
+        {
+          "address": "aws_route53_record.r53_record[\"www.example1.org.-A\"]",
+          "mode": "managed",
+          "type": "aws_route53_record",
+          "name": "r53_record",
+          "index": "www.example1.org.-A",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 2,
+          "values": {
+            "alias": [],
+            "failover_routing_policy": [],
+            "geolocation_routing_policy": [],
+            "health_check_id": null,
+            "latency_routing_policy": [],
+            "multivalue_answer_routing_policy": null,
+            "name": "www.example1.org",
+            "records": [
+              "1.2.3.4"
+            ],
+            "set_identifier": null,
+            "ttl": 600,
+            "type": "A",
+            "weighted_routing_policy": [],
+            "zone_id": "Z02461301UNR5K0AGDZX6"
+          },
+          "sensitive_values": {
+            "alias": [],
+            "failover_routing_policy": [],
+            "geolocation_routing_policy": [],
+            "latency_routing_policy": [],
+            "records": [
+              false
+            ],
+            "weighted_routing_policy": []
+          }
+        },
+        {
+          "address": "aws_route53_zone.r53_zone[0]",
+          "mode": "managed",
+          "type": "aws_route53_zone",
+          "name": "r53_zone",
+          "index": 0,
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 0,
+          "values": {
+            "comment": "Managed by Terraform",
+            "delegation_set_id": "",
+            "force_destroy": false,
+            "id": "Z02461301UNR5K0AGDZX6",
+            "name": "example1.org.",
+            "name_servers": [
+              "ns-1499.awsdns-59.org",
+              "ns-1718.awsdns-22.co.uk",
+              "ns-337.awsdns-42.com",
+              "ns-945.awsdns-54.net"
+            ],
+            "tags": {},
+            "vpc": [],
+            "vpc_id": null,
+            "vpc_region": null,
+            "zone_id": "Z02461301UNR5K0AGDZX6"
+          },
+          "sensitive_values": {
+            "name_servers": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "tags": {},
+            "vpc": []
+          }
+        }
+      ]
+    }
+  },
+  "resource_drift": [
+    {
+      "address": "aws_route53_record.r53_record[\"ftp.example1.org.-CNAME\"]",
+      "mode": "managed",
+      "type": "aws_route53_record",
+      "name": "r53_record",
+      "index": "ftp.example1.org.-CNAME",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "update"
+        ],
+        "before": {
+          "alias": [],
+          "allow_overwrite": null,
+          "failover_routing_policy": [],
+          "fqdn": "ftp.example1.org",
+          "geolocation_routing_policy": [],
+          "health_check_id": null,
+          "id": "Z02461301UNR5K0AGDZX6_ftp.example1.org._CNAME",
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "ftp.example1.org",
+          "records": [
+            "smtp.google.com"
+          ],
+          "set_identifier": null,
+          "ttl": 600,
+          "type": "CNAME",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after": {
+          "alias": [],
+          "allow_overwrite": null,
+          "failover_routing_policy": [],
+          "fqdn": "ftp.example1.org",
+          "geolocation_routing_policy": [],
+          "health_check_id": "",
+          "id": "Z02461301UNR5K0AGDZX6_ftp.example1.org._CNAME",
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "ftp.example1.org",
+          "records": [
+            "smtp.google.com"
+          ],
+          "set_identifier": "",
+          "ttl": 600,
+          "type": "CNAME",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after_unknown": {},
+        "before_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        },
+        "after_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        }
+      }
+    },
+    {
+      "address": "aws_route53_record.r53_record[\"sftp.example1.org.-CNAME\"]",
+      "mode": "managed",
+      "type": "aws_route53_record",
+      "name": "r53_record",
+      "index": "sftp.example1.org.-CNAME",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "update"
+        ],
+        "before": {
+          "alias": [],
+          "allow_overwrite": null,
+          "failover_routing_policy": [],
+          "fqdn": "sftp.example1.org",
+          "geolocation_routing_policy": [],
+          "health_check_id": null,
+          "id": "Z02461301UNR5K0AGDZX6_sftp.example1.org._CNAME",
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "sftp.example1.org",
+          "records": [
+            "sftp.google.com"
+          ],
+          "set_identifier": null,
+          "ttl": 600,
+          "type": "CNAME",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after": {
+          "alias": [],
+          "allow_overwrite": null,
+          "failover_routing_policy": [],
+          "fqdn": "sftp.example1.org",
+          "geolocation_routing_policy": [],
+          "health_check_id": "",
+          "id": "Z02461301UNR5K0AGDZX6_sftp.example1.org._CNAME",
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "sftp.example1.org",
+          "records": [
+            "sftp.google.com"
+          ],
+          "set_identifier": "",
+          "ttl": 600,
+          "type": "CNAME",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after_unknown": {},
+        "before_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        },
+        "after_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        }
+      }
+    },
+    {
+      "address": "aws_route53_record.r53_record[\"smtp.example1.org.-CNAME\"]",
+      "mode": "managed",
+      "type": "aws_route53_record",
+      "name": "r53_record",
+      "index": "smtp.example1.org.-CNAME",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "update"
+        ],
+        "before": {
+          "alias": [],
+          "allow_overwrite": null,
+          "failover_routing_policy": [],
+          "fqdn": "smtp.example1.org",
+          "geolocation_routing_policy": [],
+          "health_check_id": null,
+          "id": "Z02461301UNR5K0AGDZX6_smtp.example1.org._CNAME",
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "smtp.example1.org",
+          "records": [
+            "smtp.google.com"
+          ],
+          "set_identifier": null,
+          "ttl": 600,
+          "type": "CNAME",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after": {
+          "alias": [],
+          "allow_overwrite": null,
+          "failover_routing_policy": [],
+          "fqdn": "smtp.example1.org",
+          "geolocation_routing_policy": [],
+          "health_check_id": "",
+          "id": "Z02461301UNR5K0AGDZX6_smtp.example1.org._CNAME",
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "smtp.example1.org",
+          "records": [
+            "smtp.google.com"
+          ],
+          "set_identifier": "",
+          "ttl": 600,
+          "type": "CNAME",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after_unknown": {},
+        "before_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        },
+        "after_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        }
+      }
+    },
+    {
+      "address": "aws_route53_record.r53_record[\"www.example1.org.-CNAME\"]",
+      "mode": "managed",
+      "type": "aws_route53_record",
+      "name": "r53_record",
+      "index": "www.example1.org.-CNAME",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "update"
+        ],
+        "before": {
+          "alias": [],
+          "allow_overwrite": null,
+          "failover_routing_policy": [],
+          "fqdn": "www.example1.org",
+          "geolocation_routing_policy": [],
+          "health_check_id": null,
+          "id": "Z02461301UNR5K0AGDZX6_www.example1.org._CNAME",
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "www.example1.org",
+          "records": [
+            "google.com"
+          ],
+          "set_identifier": null,
+          "ttl": 600,
+          "type": "CNAME",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after": {
+          "alias": [],
+          "allow_overwrite": null,
+          "failover_routing_policy": [],
+          "fqdn": "www.example1.org",
+          "geolocation_routing_policy": [],
+          "health_check_id": "",
+          "id": "Z02461301UNR5K0AGDZX6_www.example1.org._CNAME",
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "www.example1.org",
+          "records": [
+            "google.com"
+          ],
+          "set_identifier": "",
+          "ttl": 600,
+          "type": "CNAME",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after_unknown": {},
+        "before_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        },
+        "after_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        }
+      }
+    },
+    {
+      "address": "aws_route53_zone.r53_zone[0]",
+      "mode": "managed",
+      "type": "aws_route53_zone",
+      "name": "r53_zone",
+      "index": 0,
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "update"
+        ],
+        "before": {
+          "comment": "Managed by Terraform",
+          "delegation_set_id": "",
+          "force_destroy": false,
+          "id": "Z02461301UNR5K0AGDZX6",
+          "name": "example1.org.",
+          "name_servers": [
+            "ns-1499.awsdns-59.org",
+            "ns-1718.awsdns-22.co.uk",
+            "ns-337.awsdns-42.com",
+            "ns-945.awsdns-54.net"
+          ],
+          "tags": null,
+          "vpc": [],
+          "vpc_id": null,
+          "vpc_region": null,
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after": {
+          "comment": "Managed by Terraform",
+          "delegation_set_id": "",
+          "force_destroy": false,
+          "id": "Z02461301UNR5K0AGDZX6",
+          "name": "example1.org.",
+          "name_servers": [
+            "ns-1499.awsdns-59.org",
+            "ns-1718.awsdns-22.co.uk",
+            "ns-337.awsdns-42.com",
+            "ns-945.awsdns-54.net"
+          ],
+          "tags": {},
+          "vpc": [],
+          "vpc_id": null,
+          "vpc_region": null,
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after_unknown": {},
+        "before_sensitive": {
+          "name_servers": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "vpc": []
+        },
+        "after_sensitive": {
+          "name_servers": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "tags": {},
+          "vpc": []
+        }
+      }
+    }
+  ],
+  "resource_changes": [
+    {
+      "address": "aws_route53_record.r53_record[\"ftp.example1.org.-CNAME\"]",
+      "mode": "managed",
+      "type": "aws_route53_record",
+      "name": "r53_record",
+      "index": "ftp.example1.org.-CNAME",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "create",
+          "delete"
+        ],
+        "before": {
+          "alias": [],
+          "allow_overwrite": null,
+          "failover_routing_policy": [],
+          "fqdn": "ftp.example1.org",
+          "geolocation_routing_policy": [],
+          "health_check_id": "",
+          "id": "Z02461301UNR5K0AGDZX6_ftp.example1.org._CNAME",
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "ftp.example1.org",
+          "records": [
+            "smtp.google.com"
+          ],
+          "set_identifier": "",
+          "ttl": 600,
+          "type": "CNAME",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after": null,
+        "after_unknown": {},
+        "before_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        },
+        "after_sensitive": false
+      },
+      "action_reason": "delete_because_each_key"
+    },
+    {
+      "address": "aws_route53_record.r53_record[\"sftp.example1.org.-CNAME\"]",
+      "mode": "managed",
+      "type": "aws_route53_record",
+      "name": "r53_record",
+      "index": "sftp.example1.org.-CNAME",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "update"
+        ],
+        "before": {
+          "alias": [],
+          "allow_overwrite": null,
+          "failover_routing_policy": [],
+          "fqdn": "sftp.example1.org",
+          "geolocation_routing_policy": [],
+          "health_check_id": "",
+          "id": "Z02461301UNR5K0AGDZX6_sftp.example1.org._CNAME",
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "sftp.example1.org",
+          "records": [
+            "sftp.google.com"
+          ],
+          "set_identifier": "",
+          "ttl": 600,
+          "type": "CNAME",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after": {
+          "alias": [],
+          "allow_overwrite": null,
+          "failover_routing_policy": [],
+          "fqdn": "sftp.example1.org",
+          "geolocation_routing_policy": [],
+          "health_check_id": "",
+          "id": "Z02461301UNR5K0AGDZX6_sftp.example1.org._CNAME",
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "sftp.example1.org",
+          "records": [
+            "ftp.google.com"
+          ],
+          "set_identifier": "",
+          "ttl": 600,
+          "type": "CNAME",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after_unknown": {},
+        "before_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        },
+        "after_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        }
+      }
+    },
+    {
+      "address": "aws_route53_record.r53_record[\"smtp.example1.org.-CNAME\"]",
+      "mode": "managed",
+      "type": "aws_route53_record",
+      "name": "r53_record",
+      "index": "smtp.example1.org.-CNAME",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "no-op"
+        ],
+        "before": {
+          "alias": [],
+          "allow_overwrite": null,
+          "failover_routing_policy": [],
+          "fqdn": "smtp.example1.org",
+          "geolocation_routing_policy": [],
+          "health_check_id": "",
+          "id": "Z02461301UNR5K0AGDZX6_smtp.example1.org._CNAME",
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "smtp.example1.org",
+          "records": [
+            "smtp.google.com"
+          ],
+          "set_identifier": "",
+          "ttl": 600,
+          "type": "CNAME",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after": {
+          "alias": [],
+          "allow_overwrite": null,
+          "failover_routing_policy": [],
+          "fqdn": "smtp.example1.org",
+          "geolocation_routing_policy": [],
+          "health_check_id": "",
+          "id": "Z02461301UNR5K0AGDZX6_smtp.example1.org._CNAME",
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "smtp.example1.org",
+          "records": [
+            "smtp.google.com"
+          ],
+          "set_identifier": "",
+          "ttl": 600,
+          "type": "CNAME",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after_unknown": {},
+        "before_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        },
+        "after_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        }
+      }
+    },
+    {
+      "address": "aws_route53_record.r53_record[\"www.example1.org.-A\"]",
+      "mode": "managed",
+      "type": "aws_route53_record",
+      "name": "r53_record",
+      "index": "www.example1.org.-A",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "before": null,
+        "after": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "health_check_id": null,
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "www.example1.org",
+          "records": [
+            "1.2.3.4"
+          ],
+          "set_identifier": null,
+          "ttl": 600,
+          "type": "A",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after_unknown": {
+          "alias": [],
+          "allow_overwrite": true,
+          "failover_routing_policy": [],
+          "fqdn": true,
+          "geolocation_routing_policy": [],
+          "id": true,
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        },
+        "before_sensitive": false,
+        "after_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        }
+      }
+    },
+    {
+      "address": "aws_route53_record.r53_record[\"www.example1.org.-CNAME\"]",
+      "mode": "managed",
+      "type": "aws_route53_record",
+      "name": "r53_record",
+      "index": "www.example1.org.-CNAME",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "delete"
+        ],
+        "before": {
+          "alias": [],
+          "allow_overwrite": null,
+          "failover_routing_policy": [],
+          "fqdn": "www.example1.org",
+          "geolocation_routing_policy": [],
+          "health_check_id": "",
+          "id": "Z02461301UNR5K0AGDZX6_www.example1.org._CNAME",
+          "latency_routing_policy": [],
+          "multivalue_answer_routing_policy": null,
+          "name": "www.example1.org",
+          "records": [
+            "google.com"
+          ],
+          "set_identifier": "",
+          "ttl": 600,
+          "type": "CNAME",
+          "weighted_routing_policy": [],
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after": null,
+        "after_unknown": {},
+        "before_sensitive": {
+          "alias": [],
+          "failover_routing_policy": [],
+          "geolocation_routing_policy": [],
+          "latency_routing_policy": [],
+          "records": [
+            false
+          ],
+          "weighted_routing_policy": []
+        },
+        "after_sensitive": false
+      },
+      "action_reason": "delete_because_each_key"
+    },
+    {
+      "address": "aws_route53_zone.r53_zone[0]",
+      "mode": "managed",
+      "type": "aws_route53_zone",
+      "name": "r53_zone",
+      "index": 0,
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": [
+          "no-op"
+        ],
+        "before": {
+          "comment": "Managed by Terraform",
+          "delegation_set_id": "",
+          "force_destroy": false,
+          "id": "Z02461301UNR5K0AGDZX6",
+          "name": "example1.org.",
+          "name_servers": [
+            "ns-1499.awsdns-59.org",
+            "ns-1718.awsdns-22.co.uk",
+            "ns-337.awsdns-42.com",
+            "ns-945.awsdns-54.net"
+          ],
+          "tags": {},
+          "vpc": [],
+          "vpc_id": null,
+          "vpc_region": null,
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after": {
+          "comment": "Managed by Terraform",
+          "delegation_set_id": "",
+          "force_destroy": false,
+          "id": "Z02461301UNR5K0AGDZX6",
+          "name": "example1.org.",
+          "name_servers": [
+            "ns-1499.awsdns-59.org",
+            "ns-1718.awsdns-22.co.uk",
+            "ns-337.awsdns-42.com",
+            "ns-945.awsdns-54.net"
+          ],
+          "tags": {},
+          "vpc": [],
+          "vpc_id": null,
+          "vpc_region": null,
+          "zone_id": "Z02461301UNR5K0AGDZX6"
+        },
+        "after_unknown": {},
+        "before_sensitive": {
+          "name_servers": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "tags": {},
+          "vpc": []
+        },
+        "after_sensitive": {
+          "name_servers": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "tags": {},
+          "vpc": []
+        }
+      }
+    }
+  ],
+  "output_changes": {
+    "total_records": {
+      "actions": [
+        "update"
+      ],
+      "before": 4,
+      "after": 3,
+      "after_unknown": false,
+      "before_sensitive": false,
+      "after_sensitive": false
+    }
+  },
+  "prior_state": {
+    "format_version": "1.0",
+    "terraform_version": "1.1.7",
+    "values": {
+      "outputs": {
+        "total_records": {
+          "sensitive": false,
+          "value": 3
+        }
+      },
+      "root_module": {
+        "resources": [
+          {
+            "address": "aws_route53_record.r53_record[\"ftp.example1.org.-CNAME\"]",
+            "mode": "managed",
+            "type": "aws_route53_record",
+            "name": "r53_record",
+            "index": "ftp.example1.org.-CNAME",
+            "provider_name": "registry.terraform.io/hashicorp/aws",
+            "schema_version": 2,
+            "values": {
+              "alias": [],
+              "allow_overwrite": null,
+              "failover_routing_policy": [],
+              "fqdn": "ftp.example1.org",
+              "geolocation_routing_policy": [],
+              "health_check_id": "",
+              "id": "Z02461301UNR5K0AGDZX6_ftp.example1.org._CNAME",
+              "latency_routing_policy": [],
+              "multivalue_answer_routing_policy": null,
+              "name": "ftp.example1.org",
+              "records": [
+                "smtp.google.com"
+              ],
+              "set_identifier": "",
+              "ttl": 600,
+              "type": "CNAME",
+              "weighted_routing_policy": [],
+              "zone_id": "Z02461301UNR5K0AGDZX6"
+            },
+            "sensitive_values": {
+              "alias": [],
+              "failover_routing_policy": [],
+              "geolocation_routing_policy": [],
+              "latency_routing_policy": [],
+              "records": [
+                false
+              ],
+              "weighted_routing_policy": []
+            },
+            "depends_on": [
+              "aws_route53_zone.r53_zone",
+              "data.aws_route53_zone.r53_zone"
+            ]
+          },
+          {
+            "address": "aws_route53_record.r53_record[\"sftp.example1.org.-CNAME\"]",
+            "mode": "managed",
+            "type": "aws_route53_record",
+            "name": "r53_record",
+            "index": "sftp.example1.org.-CNAME",
+            "provider_name": "registry.terraform.io/hashicorp/aws",
+            "schema_version": 2,
+            "values": {
+              "alias": [],
+              "allow_overwrite": null,
+              "failover_routing_policy": [],
+              "fqdn": "sftp.example1.org",
+              "geolocation_routing_policy": [],
+              "health_check_id": "",
+              "id": "Z02461301UNR5K0AGDZX6_sftp.example1.org._CNAME",
+              "latency_routing_policy": [],
+              "multivalue_answer_routing_policy": null,
+              "name": "sftp.example1.org",
+              "records": [
+                "sftp.google.com"
+              ],
+              "set_identifier": "",
+              "ttl": 600,
+              "type": "CNAME",
+              "weighted_routing_policy": [],
+              "zone_id": "Z02461301UNR5K0AGDZX6"
+            },
+            "sensitive_values": {
+              "alias": [],
+              "failover_routing_policy": [],
+              "geolocation_routing_policy": [],
+              "latency_routing_policy": [],
+              "records": [
+                false
+              ],
+              "weighted_routing_policy": []
+            },
+            "depends_on": [
+              "aws_route53_zone.r53_zone",
+              "data.aws_route53_zone.r53_zone"
+            ]
+          },
+          {
+            "address": "aws_route53_record.r53_record[\"smtp.example1.org.-CNAME\"]",
+            "mode": "managed",
+            "type": "aws_route53_record",
+            "name": "r53_record",
+            "index": "smtp.example1.org.-CNAME",
+            "provider_name": "registry.terraform.io/hashicorp/aws",
+            "schema_version": 2,
+            "values": {
+              "alias": [],
+              "allow_overwrite": null,
+              "failover_routing_policy": [],
+              "fqdn": "smtp.example1.org",
+              "geolocation_routing_policy": [],
+              "health_check_id": "",
+              "id": "Z02461301UNR5K0AGDZX6_smtp.example1.org._CNAME",
+              "latency_routing_policy": [],
+              "multivalue_answer_routing_policy": null,
+              "name": "smtp.example1.org",
+              "records": [
+                "smtp.google.com"
+              ],
+              "set_identifier": "",
+              "ttl": 600,
+              "type": "CNAME",
+              "weighted_routing_policy": [],
+              "zone_id": "Z02461301UNR5K0AGDZX6"
+            },
+            "sensitive_values": {
+              "alias": [],
+              "failover_routing_policy": [],
+              "geolocation_routing_policy": [],
+              "latency_routing_policy": [],
+              "records": [
+                false
+              ],
+              "weighted_routing_policy": []
+            },
+            "depends_on": [
+              "aws_route53_zone.r53_zone",
+              "data.aws_route53_zone.r53_zone"
+            ]
+          },
+          {
+            "address": "aws_route53_record.r53_record[\"www.example1.org.-CNAME\"]",
+            "mode": "managed",
+            "type": "aws_route53_record",
+            "name": "r53_record",
+            "index": "www.example1.org.-CNAME",
+            "provider_name": "registry.terraform.io/hashicorp/aws",
+            "schema_version": 2,
+            "values": {
+              "alias": [],
+              "allow_overwrite": null,
+              "failover_routing_policy": [],
+              "fqdn": "www.example1.org",
+              "geolocation_routing_policy": [],
+              "health_check_id": "",
+              "id": "Z02461301UNR5K0AGDZX6_www.example1.org._CNAME",
+              "latency_routing_policy": [],
+              "multivalue_answer_routing_policy": null,
+              "name": "www.example1.org",
+              "records": [
+                "google.com"
+              ],
+              "set_identifier": "",
+              "ttl": 600,
+              "type": "CNAME",
+              "weighted_routing_policy": [],
+              "zone_id": "Z02461301UNR5K0AGDZX6"
+            },
+            "sensitive_values": {
+              "alias": [],
+              "failover_routing_policy": [],
+              "geolocation_routing_policy": [],
+              "latency_routing_policy": [],
+              "records": [
+                false
+              ],
+              "weighted_routing_policy": []
+            },
+            "depends_on": [
+              "aws_route53_zone.r53_zone",
+              "data.aws_route53_zone.r53_zone"
+            ]
+          },
+          {
+            "address": "aws_route53_zone.r53_zone[0]",
+            "mode": "managed",
+            "type": "aws_route53_zone",
+            "name": "r53_zone",
+            "index": 0,
+            "provider_name": "registry.terraform.io/hashicorp/aws",
+            "schema_version": 0,
+            "values": {
+              "comment": "Managed by Terraform",
+              "delegation_set_id": "",
+              "force_destroy": false,
+              "id": "Z02461301UNR5K0AGDZX6",
+              "name": "example1.org.",
+              "name_servers": [
+                "ns-1499.awsdns-59.org",
+                "ns-1718.awsdns-22.co.uk",
+                "ns-337.awsdns-42.com",
+                "ns-945.awsdns-54.net"
+              ],
+              "tags": {},
+              "vpc": [],
+              "vpc_id": null,
+              "vpc_region": null,
+              "zone_id": "Z02461301UNR5K0AGDZX6"
+            },
+            "sensitive_values": {
+              "name_servers": [
+                false,
+                false,
+                false,
+                false
+              ],
+              "tags": {},
+              "vpc": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "configuration": {
+    "provider_config": {
+      "aws": {
+        "name": "aws",
+        "version_constraint": "~> 2.0",
+        "expressions": {
+          "region": {
+            "references": [
+              "var.aws_region"
+            ]
+          }
+        }
+      }
+    },
+    "root_module": {
+      "outputs": {
+        "total_records": {
+          "expression": {
+            "references": [
+              "local.map_records"
+            ]
+          },
+          "description": "Total number of records managed by this module"
+        }
+      },
+      "resources": [
+        {
+          "address": "aws_route53_record.r53_alias",
+          "mode": "managed",
+          "type": "aws_route53_record",
+          "name": "r53_alias",
+          "provider_config_key": "aws",
+          "expressions": {
+            "alias": [
+              {
+                "evaluate_target_health": {
+                  "references": [
+                    "each.value[\"alias\"][\"evaluate_target_health\"]",
+                    "each.value[\"alias\"]",
+                    "each.value"
+                  ]
+                },
+                "name": {
+                  "references": [
+                    "each.value[\"alias\"][\"name\"]",
+                    "each.value[\"alias\"]",
+                    "each.value"
+                  ]
+                },
+                "zone_id": {
+                  "references": [
+                    "each.value[\"alias\"][\"zone_id\"]",
+                    "each.value[\"alias\"]",
+                    "each.value"
+                  ]
+                }
+              }
+            ],
+            "name": {
+              "references": [
+                "each.value[\"name\"]",
+                "each.value"
+              ]
+            },
+            "type": {
+              "references": [
+                "each.value[\"type\"]",
+                "each.value"
+              ]
+            },
+            "zone_id": {
+              "references": [
+                "local.zone_id"
+              ]
+            }
+          },
+          "schema_version": 2,
+          "for_each_expression": {
+            "references": [
+              "local.map_aliases"
+            ]
+          }
+        },
+        {
+          "address": "aws_route53_record.r53_record",
+          "mode": "managed",
+          "type": "aws_route53_record",
+          "name": "r53_record",
+          "provider_config_key": "aws",
+          "expressions": {
+            "name": {
+              "references": [
+                "each.value[\"name\"]",
+                "each.value"
+              ]
+            },
+            "records": {
+              "references": [
+                "each.value[\"values\"]",
+                "each.value"
+              ]
+            },
+            "ttl": {
+              "references": [
+                "each.value[\"ttl\"]",
+                "each.value"
+              ]
+            },
+            "type": {
+              "references": [
+                "each.value[\"type\"]",
+                "each.value"
+              ]
+            },
+            "zone_id": {
+              "references": [
+                "local.zone_id"
+              ]
+            }
+          },
+          "schema_version": 2,
+          "for_each_expression": {
+            "references": [
+              "local.map_records"
+            ]
+          }
+        },
+        {
+          "address": "aws_route53_zone.r53_zone",
+          "mode": "managed",
+          "type": "aws_route53_zone",
+          "name": "r53_zone",
+          "provider_config_key": "aws",
+          "expressions": {
+            "name": {
+              "references": [
+                "var.zone"
+              ]
+            }
+          },
+          "schema_version": 0,
+          "count_expression": {
+            "references": [
+              "var.manage_zone"
+            ]
+          }
+        },
+        {
+          "address": "data.aws_route53_zone.r53_zone",
+          "mode": "data",
+          "type": "aws_route53_zone",
+          "name": "r53_zone",
+          "provider_config_key": "aws",
+          "expressions": {
+            "name": {
+              "references": [
+                "var.zone"
+              ]
+            }
+          },
+          "schema_version": 0,
+          "count_expression": {
+            "references": [
+              "var.manage_zone"
+            ]
+          }
+        }
+      ],
+      "variables": {
+        "aliases": {
+          "default": [],
+          "description": "The Route53 zone records aliases (see https://www.terraform.io/docs/providers/aws/r/route53_record.html#alias-record) to be managed"
+        },
+        "aws_region": {
+          "default": "us-east-1",
+          "description": "AWS provider region. Not applicable since Route53 are AWS global resources"
+        },
+        "base_environment_services": {
+          "default": [],
+          "description": "List of base records autogenerated for each environment declared in `environments` variable.\nUse this variable for multilevel management of environment records\n"
+        },
+        "environment_services": {
+          "default": [],
+          "description": "List of records autogenerated for each environment declared in `environments` variable"
+        },
+        "environments": {
+          "default": [],
+          "description": "List of environments managed by this module. For each environment declared here, all of `environment_services`\ndomains will be generated pointing to CNAME passed as parameter in the form `{environment_services}-{environment}.{zone}`.\nDon't generate records for services in `excluded_services` list\n"
+        },
+        "manage_zone": {
+          "default": false,
+          "description": "Manage (true) Route53 zone or use data source (false)?"
+        },
+        "records": {
+          "default": [],
+          "description": "The Route53 zone records to be managed"
+        },
+        "zone": {
+          "description": "The Route53 zone name to be managed"
+        }
+      }
+    }
+  }
+}

@@ -166,11 +166,11 @@ const ChangedField = (props: ChangedFieldProps) => {
     <Row className={cx(styles.row, {'d-none': !showRow})}>
       <Col md={2}>
         <div title={field}>
-          <Row className="text-truncate align-items-center d-flex">
-            <Col md={{span: 8}} >
+          <Row className="align-items-center d-flex">
+            <Col md={{span: 10}} className="text-truncate">
               {fieldType} <strong>{field}</strong>
             </Col>
-            <Col md={{span: 2, offset: 2}} >
+            <Col md={{span: 2}} >
               <CollapseToggle toggleValue={collapsed} toggleFn={setCollapsed}/>
             </Col>
           </Row>

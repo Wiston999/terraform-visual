@@ -2,38 +2,6 @@ import { Entities } from '@app/data'
 import isEqual from 'lodash/isEqual'
 import * as Diff from 'diff'
 
-export const TerraformPlan = {
-  fromJsonStr(jsonStr: string): Entities.TerraformPlan {
-    const planJson = JSON.parse(jsonStr)
-    return TerraformPlan.fromJson(planJson)
-  },
-
-  fromJson(planJson: { [key: string]: any }): Entities.TerraformPlan {
-    const plan: Entities.TerraformPlan = { resource_changes: [] }
-
-    for (const resource_change of planJson.resource_changes) {
-      const resourceChange: Entities.TerraformPlanResourceChange = {
-        address: resource_change.address,
-        module_address: resource_change.module_address,
-        type: resource_change.type,
-        name: resource_change.name,
-        change: {
-          actions: resource_change.change.actions,
-          before: resource_change.change.before,
-          after: resource_change.change.after,
-          after_unknown: resource_change.change.after_unknown,
-          after_sensitive: resource_change.change.after_sensitive,
-          before_sensitive: resource_change.change.before_sensitive,
-        },
-      }
-
-      plan.resource_changes.push(resourceChange)
-    }
-
-    return plan
-  },
-}
-
 export const TerraformPlanResourceChangeFieldDiff = {
   isDiff(
     change: Entities.TerraformPlanResourceChangeFieldDiff
@@ -54,7 +22,7 @@ export const TerraformPlanResourceChangeField = {
       value,
       sensitive || {},
     )
-    if (data.type != 'string') {
+    if (data.type != 'string' && !sensitive && value !== null) {
       data.value = JSON.stringify(data.value, null, 4)
     }
     if (value === null) {
@@ -76,7 +44,7 @@ export const TerraformPlanResourceChangeField = {
       case 'string':
         if (sensitive_data === true) {
           newData = '(sensitive)'
-        } else {
+        } else if (dataType === 'string') {
           // Try to render if data is a JSON stringified
           try {
             newData = JSON.stringify(JSON.parse(data), null, 4)

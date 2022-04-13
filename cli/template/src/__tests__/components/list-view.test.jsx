@@ -1,7 +1,8 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { ListView } from '../../components'
-import Entities from '../../data'
+
+const globalPlan = require('../plan.json');
 
 describe('ListView', () => {
   const setState = jest.fn();
@@ -16,4 +17,13 @@ describe('ListView', () => {
 
     render(<ListView.C plan={plan} focusedResource={focusedResource} setFocusedResource={setFocusedResource}/>)
   })
+
+  it('renders a plan', () => {
+    const plan = globalPlan;
+
+    const [focusedResource, setFocusedResource] = React.useState()
+
+    render(<ListView.C plan={plan} focusedResource={focusedResource} setFocusedResource={setFocusedResource}/>)
+  })
+
 })

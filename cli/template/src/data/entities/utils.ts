@@ -22,13 +22,13 @@ export const TerraformPlanResourceChangeField = {
       value,
       sensitive || {},
     )
-    if (data.type != 'string' && !sensitive && value !== null) {
-      data.value = JSON.stringify(data.value, null, 4)
-    }
     if (value === null) {
       data.type = 'null'
     } else if (Array.isArray(value)){
       data.type = 'array'
+    }
+    if (['number', 'boolean', 'array', 'object'].includes(data.type) && data.value != '(sensitive)') {
+        data.value = JSON.stringify(data.value, null, 4)
     }
     return data
   },
@@ -158,9 +158,9 @@ export const TerraformPlanResourceChangeChange = {
     // Compute structured diff for better readibility
     for (const field of Object.keys(diff)) {
       const diffChange = diff[field]
-      const before = diffChange.src.value ? diffChange.src.value : ''
+      const before = diffChange.src.value && !diffChange.src.sensitive ? diffChange.src.value : ''
       const beforeLines = (before.match(/\n/g) || '').length + 1
-      const after = diffChange.dst.value ? diffChange.dst.value : ''
+      const after = diffChange.dst.value && !diffChange.dst.sensitive ? diffChange.dst.value : ''
       const afterLines = (after.match(/\n/g) || '').length + 1
 
       if (beforeLines > 4 || afterLines > 4) {

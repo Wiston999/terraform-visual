@@ -113,11 +113,11 @@ describe('TerraformPlanResourceChangeField', () => {
     expect(sensitiveBool.type).toBe('boolean')
     expect(sensitiveBool.sensitive).toBe(true)
 
-    expect(array.value).toStrictEqual(['aaa', '(sensitive)', '(null)', 42])
+    expect(array.value).toBe(JSON.stringify(['aaa', '(sensitive)', '(null)', 42], null, 4))
     expect(array.type).toBe('array')
     expect(array.sensitive).toBe(true)
 
-    expect(hash.value).toStrictEqual({'a': 'aaa', 'b': '(sensitive)', 'c': '(null)', 'd': 42, 'e': ['(sensitive)', 'a']})
+    expect(hash.value).toBe(JSON.stringify({'a': 'aaa', 'b': '(sensitive)', 'c': '(null)', 'd': 42, 'e': ['(sensitive)', 'a']}, null, 4))
     expect(hash.type).toBe('object')
     expect(hash.sensitive).toBe(true)
   })

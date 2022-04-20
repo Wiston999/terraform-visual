@@ -30,6 +30,7 @@ export interface TerraformPlan {
 export interface TerraformPlanResourceChange {
   address: string
   module_address?: string
+  action_reason?: string
   type: string
   name: string
   change: TerraformPlanResourceChangeChange
@@ -42,6 +43,7 @@ export interface TerraformPlanResourceChangeChange {
   after: { [key: string]: unknown } | null
   after_sensitive: { [key: string]: unknown } | null
   after_unknown: { [key: string]: unknown }
+  replace_paths?: string[]
 }
 
 export enum TerraformPlanResourceChangeChangeAction {
@@ -71,6 +73,7 @@ export interface TerraformPlanResourceChangeField {
 export interface TerraformPlanResourceChangeFieldDiff {
   src: TerraformPlanResourceChangeField
   dst: TerraformPlanResourceChangeField
+  forces_replacement: boolean
   diff?: Diff.ParsedDiff
 }
 

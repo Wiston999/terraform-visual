@@ -36,7 +36,10 @@ const diffBase = {
   },
   after_unknown: {
     fff: {}
-  }
+  },
+  replace_paths: [
+    'eee'
+  ]
 }
 
 describe('TerraformPlanResourceChangeFieldDiff', () => {
@@ -185,12 +188,12 @@ describe('TerraformPlanResourceChangeChange', () => {
   it('getDiff', () => {
     const diff = Entities.Utils.TerraformPlanResourceChangeChange.getDiff(diffBase)
 
-    expect(diff.aaa).toStrictEqual({src: {value: 'aaa', type: 'string', sensitive: false}, dst: {value: 'aaa', type: 'string', sensitive: false}})
-    expect(diff.bbb).toStrictEqual({src: {value: '(sensitive)', type: 'string', sensitive: true}, dst: {value: '(sensitive)', type: 'string', sensitive: true}})
-    expect(diff.ccc).toStrictEqual({src: {value: 'ccc', type: 'string', sensitive: false}, dst: {value: 'eee', type: 'string', sensitive: false}})
-    expect(diff.ddd).toStrictEqual({src: {value: '(sensitive)', type: 'string', sensitive: true}, dst: {value: '(sensitive)', type: 'string', sensitive: true}})
-    expect(diff.eee).toStrictEqual({src: {}, dst: {value: 'zzz', sensitive: false, type: 'string'}})
-    expect(diff.fff).toStrictEqual({src: {}, dst: {value: '(known after apply)', unknown_after: true}})
+    expect(diff.aaa).toStrictEqual({forces_replacement: false, src: {value: 'aaa', type: 'string', sensitive: false}, dst: {value: 'aaa', type: 'string', sensitive: false}})
+    expect(diff.bbb).toStrictEqual({forces_replacement: false, src: {value: '(sensitive)', type: 'string', sensitive: true}, dst: {value: '(sensitive)', type: 'string', sensitive: true}})
+    expect(diff.ccc).toStrictEqual({forces_replacement: false, src: {value: 'ccc', type: 'string', sensitive: false}, dst: {value: 'eee', type: 'string', sensitive: false}})
+    expect(diff.ddd).toStrictEqual({forces_replacement: false, src: {value: '(sensitive)', type: 'string', sensitive: true}, dst: {value: '(sensitive)', type: 'string', sensitive: true}})
+    expect(diff.eee).toStrictEqual({forces_replacement: true, src: {}, dst: {value: 'zzz', sensitive: false, type: 'string'}})
+    expect(diff.fff).toStrictEqual({forces_replacement: false, src: {}, dst: {value: '(known after apply)', unknown_after: true}})
     expect(diff.multiline.src).toStrictEqual({value: '[\n    1,\n    2,\n    3,\n    4,\n    5\n]', type: 'string', sensitive: false})
     expect(diff.multiline.dst).toStrictEqual({value: '[\n    5,\n    4,\n    3,\n    2,\n    1\n]', type: 'string', sensitive: false})
     expect(diff.multiline.diff).toBeTruthy()

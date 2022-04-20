@@ -2,7 +2,7 @@ import styles from '@app/components/focused-view/focused-view.module.css'
 import React, { useState } from 'react';
 import capitalize from 'lodash/capitalize';
 import { Entities } from '@app/data'
-import { BsLink45Deg, BsCheckCircle, BsSlashCircle, BsHash } from 'react-icons/bs'
+import { BsFillInfoSquareFill, BsLink45Deg, BsCheckCircle, BsSlashCircle, BsHash } from 'react-icons/bs'
 import { RiBracesLine, RiBracketsLine } from "react-icons/ri";
 import { FaEquals, FaChevronRight } from 'react-icons/fa'
 
@@ -14,6 +14,7 @@ import Col from 'react-bootstrap/Col'
 import ToggleButton from 'react-bootstrap/ToggleButton'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
+import Button from 'react-bootstrap/Button'
 
 interface Props {
   resource?: Entities.TerraformPlanResourceChange
@@ -33,6 +34,7 @@ export const C = (props: Props) => {
   const diff = Entities.Utils.TerraformPlanResourceChangeChange.getDiff(resource.change)
   const actionAlias = Entities.Utils.TerraformPlanResourceChangeChange.getActionAlias(resource.change)
   const unchangedCount = Entities.Utils.TerraformPlanResourceChangeChangeDiff.getUnchangedFields(diff)
+  const reasonTooltip = resource.action_reason ? resource.action_reason.replaceAll('_', ' ') : null
 
   return (
     <Container fluid className={cx(styles.container, "py-2")}>
@@ -42,10 +44,28 @@ export const C = (props: Props) => {
         </Col>
         <Col>
           <Row className="d-flex align-items-center">
-            <Col md={{ span: 2, offset: 2 }}>
-              <Actions actions={resource.change.actions} />
+            <Col md={{ span: 5, offset: 1 }}>
+              <Row className="d-flex align-items-center">
+                { resource.action_reason ?
+                  (
+                    <Col md={{ span: 2 }}>
+                      <OverlayTrigger
+                        placement="right"
+                        overlay={<Tooltip className="text-capitalize">{reasonTooltip}</Tooltip>}
+                      >
+                        <Button variant="outline-light" size="sm">
+                          <BsFillInfoSquareFill title={resource.action_reason}/>
+                        </Button>
+                      </OverlayTrigger>
+                    </Col>
+                  ) : null
+                }
+                <Col md={{ span: 10, offset: resource.action_reason ? 0 : 2 }}>
+                  <Actions actions={resource.change.actions} />
+                </Col>
+              </Row>
             </Col>
-            <Col md={{ span: 6, offset: 2 }}>
+            <Col md={{ span: 6 }}>
               <UnchangedToggle toggleValue={showUnchanged} toggleFn={setShowUnchanged} count={Object.keys(unchangedCount).length}/>
             </Col>
           </Row>
@@ -79,7 +99,7 @@ const Actions = (props: ActionsProps) => {
     )
 
     if (i !== actions.length - 1) {
-      actionElems.push(<span key={2 * i + 1}> then </span>)
+      actionElems.push(<span key={2 * i + 1}>&nbsp;then&nbsp;</span>)
     }
   }
 
@@ -162,12 +182,14 @@ const ChangedField = (props: ChangedFieldProps) => {
     <UnifiedDiffView changes={changes.diff} /> :
     <ColumsFieldView changes={changes} actionAlias={actionAlias} />
 
+  const fieldTitle = changes.forces_replacement ? `${field} (Forces replacement)`: field
+
   return (
     <Row className={cx(styles.row, {'d-none': !showRow})}>
       <Col md={2}>
-        <div title={field}>
+        <div title={fieldTitle}>
           <Row className="align-items-center d-flex">
-            <Col md={{span: 10}} className="text-truncate">
+            <Col md={{span: 10}} className={ cx("text-truncate", {[styles.colorRed]: changes.forces_replacement}) }>
               {fieldType} <strong>{field}</strong>
             </Col>
             <Col md={{span: 2}} >

@@ -117,6 +117,7 @@ export const TerraformPlanResourceChangeChange = {
           diff[field] = {
             src: {} as Entities.TerraformPlanResourceChangeField,
             dst: {} as Entities.TerraformPlanResourceChangeField,
+            forces_replacement: false,
           }
         }
 
@@ -134,6 +135,7 @@ export const TerraformPlanResourceChangeChange = {
           diff[field] = {
             src: {} as Entities.TerraformPlanResourceChangeField,
             dst: {} as Entities.TerraformPlanResourceChangeField,
+            forces_replacement: false,
           }
         }
         diff[field].dst = TerraformPlanResourceChangeField.setValueType(
@@ -144,11 +146,18 @@ export const TerraformPlanResourceChangeChange = {
       }
     }
 
+    if (change.replace_paths) {
+      for (const field of change.replace_paths) {
+        diff[field].forces_replacement = true
+      }
+    }
+
     for (const field of Object.keys(change.after_unknown)) {
       if (!diff[field]) {
           diff[field] = {
             src: {} as Entities.TerraformPlanResourceChangeField,
             dst: {} as Entities.TerraformPlanResourceChangeField,
+            forces_replacement: false,
           }
       }
       diff[field].dst.unknown_after = true

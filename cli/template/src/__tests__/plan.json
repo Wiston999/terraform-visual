@@ -629,7 +629,10 @@
           ],
           "weighted_routing_policy": []
         },
-        "after_sensitive": false
+        "after_sensitive": false,
+        "replace_paths": [
+          "records"
+        ]
       },
       "action_reason": "delete_because_each_key"
     },

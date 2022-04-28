@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2022-04-28
+
+## Changed
+- Show stringified JSONS as structured data
+
+## Added
+- Add visualization for action reason and replace paths (forces replacement) introduced in newer plan versions
+- Add several test cases
+
 ## [1.2.0] - 2021-11-25
 
 ## Changed
